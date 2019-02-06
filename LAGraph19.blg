@@ -1,0 +1,59 @@
+This is BibTeX, Version 0.99d (TeX Live 2018)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: LAGraph19.aux
+The style file: IEEEtran.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Database file #1: LAGraph19.bib
+Warning--I didn't find a database entry for "BulucGilbert08"
+Warning--I didn't find a database entry for "Gustavson78"
+-- IEEEtran.bst version 1.14 (2015/08/26) by Michael Shell.
+-- http://www.michaelshell.org/tex/ieeetran/bibtex/
+-- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
+
+Done.
+You've used 12 entries,
+            4087 wiz_defined-function locations,
+            889 strings with 9974 characters,
+and the built_in function-call counts, 8853 in all, are:
+= -- 593
+> -- 330
+< -- 48
++ -- 170
+- -- 70
+* -- 429
+:= -- 1227
+add.period$ -- 28
+call.type$ -- 12
+change.case$ -- 11
+chr.to.int$ -- 114
+cite$ -- 12
+duplicate$ -- 647
+empty$ -- 774
+format.name$ -- 79
+if$ -- 2070
+int.to.chr$ -- 0
+int.to.str$ -- 12
+missing$ -- 146
+newline$ -- 59
+num.names$ -- 9
+pop$ -- 397
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 2
+skip$ -- 660
+stack$ -- 0
+substring$ -- 276
+swap$ -- 486
+text.length$ -- 10
+text.prefix$ -- 0
+top$ -- 5
+type$ -- 12
+warning$ -- 0
+while$ -- 28
+width$ -- 14
+write$ -- 122
+(There were 2 warnings)
