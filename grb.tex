@@ -1,0 +1,97 @@
+
+SuiteSparse:GraphBLAS is a full implementation of the GraphBLAS standard, which
+defines a set of sparse matrix operations on an extended algebra of semirings
+using an almost unlimited variety of operators and types.  When applied to
+sparse adjacency matrices, these algebraic operations are equivalent to
+computations on graphs.  GraphBLAS provides a powerful and expressive framework
+for creating graph algorithms based on the elegant mathematics of sparse matrix
+operations on a semiring.
+
+The design of a GraphBLAS library is flexible, because its data structures are
+opaque to the user.  SuiteSparse:GraphBLAS uses a compressed-sparse vector
+storage mechanism, in four different forms.  A matrix can be stored in
+row-major order (CSR), or column-major order (CSC).  Each sparse vector
+consists of a sorted list of indices, and the corresponding numerical values.
+The sparse vectors are packed together into two arrays, and another ``pointer
+array'' (of size equal to the dimension of the matrix, say $n$) keeps track of
+where each row (or column) starts.  The space taken is $O(n+e)$ for a CSR
+matrix with $n$ rows or a CSC matrix with $n$ columns, and with $e$ entries.
+Both of these two forms can be modified in a {\em hypersparse} form
+\cite{BulucGilbert08}, where the pointer array itself becomes sparse, and
+non-empty vectors take no space at all.  The space is reduced to $O(e)$,
+however, so that matrices with enormous dimensions can be created, as long as
+$e << n$.  Hypersparsity is exploited automatically.  All methods can operate
+on all four matrix formats in any combination.
+
+The ability to incrementally modify a graph is critical in many applications.
+GraphBLAS includes two operations that can make small incremental changes to a
+graph/matrix:  namely \verb'GrB_setElement' and \verb'GrB_assign', and It would
+be exceedingly slow to insert or delete a single new entry in a CSR or CSC
+format, taking $O(n+e)$ time {\bf per entry} inserted.  Instead, the
+non-blocking idea in GraphBLAS is exploited.  Fast deletion of entries is
+handled by creating {\em zombies}, which are entries tagged for later deletion.
+Fast insertion is handled with {\em pending tuples}, which is a separate
+unordered list of $(i,j,a_{ij})$ for each new entry.  When a matrix operation
+occurs (such as matrix multiply), all zombies are killed and all pending tuples
+are assembled, in a single $O(n+ e + p \log p)$ step (for $p$ pending tuples),
+or $O(e +p \log p)$ in the hypersparse case.  As a result, it is just as fast
+to use a sequence of $e$ \verb'GrB_setElement' operations to build a matrix, as
+it is to create an array of $e$ tuples and use \verb'GrB_build'.  Internally,
+SuiteSparse:GraphBLAS is building the list itself, for the user, and then does
+a \verb'GrB_build' when the matrix needs to be completed.
+
+To enable high-performance matrix-matrix multiply, a code generation mechanism
+is used to build functions for each semiring that can be created with built-in
+operators.  The functions can rely on Gustavson's method \cite{Gustavson78}, a
+dot product method, and heap-based method, all with masked variants.  A current
+prototype of the package adds an early exit mechanism for the MIN, MAX, OR, and
+AND monoids, where a dot product can terminate as soon as a terminal value is
+found in the result (\verb'true' for OR, for example).  This will enable a fast
+direct-optimizing BFS to be written, where the ``pull'' is a dot product, and
+the ``push'' a saxpy-based operation (Gustavson's or the heap method).
+
+Since it is meant as the GraphBLAS reference implementation, testing is a vital
+component to the package.  In SuiteSparse:GraphBLAS, each GraphBLAS operation
+was written twice: once in high-performance algorithms in C, and again in a
+very simple and short MATLAB script, using dense matrices with of the required
+type.  For example, \verb'GrB_assign' requires about 3,908 lines of C (not
+counting comments), but only 161 lines in MATLAB.  The pattern in the MATLAB
+version is held as a seperate boolean matrix.  The MATLAB functions are not
+intended to be fast.  Instead, they exactly mimic the GraphBLAS API
+Specification, line by line, so they can be visually inspected for conformance
+to the spec.  For example, matrix multiply is written with a triply-nested
+\verb'for' loop.  Then, to test the package, each computation is done in
+SuiteSparse:GraphBLAS (via a MATLAB interface) and in the MATLAB mimic.  The
+tests pass only if the results are identical in both value and pattern (even
+with identical floating-point roundoff error, in most cases).
+
+SuiteSparse:GraphBLAS appears in Debian and Ubuntu linux distros,
+and has been released as part of the RedisGraph database
+module of the Redis database systems, by RedisLabs, Inc.
+\url{https://redislabs.com/redis-enterprise/redis-modules/redis-enterprise-modules/redisgraph/}
+
+%-------------------------------------------------------------------------------
+
+@article{Gustavson78,
+        author={Gustavson, F. G.},
+        year={1978},
+        title={Two Fast Algorithms for Sparse Matrices: Multiplication and Permuted Transposition},
+        journal={ACM Trans. Math. Softw.},
+        volume={4},
+        number={3},
+        pages={250--269},
+        doi={ http://dx.doi.org/10.1145/355791.355796 }, }
+
+@inproceedings{BulucGilbert08,
+    author={Bulu\c{c}, A. and Gilbert, J. R.},
+    author={A. Buluc and J. R. Gilbert}, 
+    booktitle={2008 IEEE International Symposium on Parallel and Distributed Processing}, 
+    title={On the representation and multiplication of hypersparse matrices}, 
+    year={2008}, 
+    volume={}, 
+    number={}, 
+    pages={1-11}, 
+    doi={10.1109/IPDPS.2008.4536313}, 
+    ISSN={1530-2075}, 
+    month={April},}
+
