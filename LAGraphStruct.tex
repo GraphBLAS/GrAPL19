@@ -1,0 +1,33 @@
+\section{LAGraph Repository}
+\label{sec:repo}
+
+The hypothesis underlying the GraphBLAS is that algorithm designers can focus on expressing their algorithms
+in terms of the high level linear algebra operations defined in the GraphBLAS while leaving low level
+optimizations to any particular hardware platform to the implementor of the GraphBLAS.  Ultimately, 
+we want hardware vendors to be responsible for creating highly tuned versions of the GraphBLAS
+specialized to the features of their systems.
+
+Algorithm designers will naturally wonder how much performance is lost due to the use of a high 
+level API such as the GraphBLAS.  We believe the GraphBLAS bring inherent efficiency advantages to 
+a graph algorithms due to the more structures access to data afforded by the sparse linear algebra 
+formats.  This is an untested hypothesis, however, since until now, we have not had multiple 
+implementations of a high level API tuned to the features of a range of platforms.
+
+Testing this hypothesis of the performance potential afforded by the GraphBLAS is a major outcome
+we anticipate from the LAGraph project.  By collecting high level graph algorithms and validating them
+across an engaged community, we will produce the library of algorithms needed to evaluate the 
+effectiveness of the GraphBLAS approach.
+
+Before we can conduct such experiments, however, we need to collect graph algorithms implemented on 
+top of the GraphBLAS. We have created a git hub repository for members of the LAGraph community to 
+use to contribute GraphBLAS algorithms. The basic elements of the repository include:
+%% ToDo: check line by line against the repository and make sure this is complete
+\begin{itemize}
+\item A Build System for creating the LAGraph library and the test routines.
+\item A library of utilities for loading matrices from disk and evaluating results
+\item A directory of graph algorithms.
+\item A directory holdling a test harness for each alorithm
+\end{itemize}
+
+We will write documentation, a programer's reference guide and define procedures for how people
+can add new algorithms.  

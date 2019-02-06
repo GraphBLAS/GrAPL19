@@ -1,0 +1,98 @@
+\section{The GraphBLAS}
+\label{sec:math}
+
+%%  <<< Self Plagiarism Warning >>>>
+%% The text from here to the end of the operations table was lifted from our
+%% GABB paper where we introduced the C API
+Consider a graph represented as an $n$-by-$n$ adjacency matrix $\matrix{A}$,
+where $A_{ij}$ is the weight of the edge from vertex $i$ to vertex $j$,
+and a second $k$-by-$n$ matrix $\matrix{B}$ representing a subset (of size k) of the vertices
+in the graph, such that $B_{ji}$ is $1$ if the $j$th element of the subset is vertex $i$
+(and all other elements of $\matrix{B}$ are 0).  The traditional matrix
+product $\matrix{B} \times \matrix{A}$ over real arithmetic of these two matrices returns 
+the cost based on the edge weights of reaching the set of vertices
+adjacent to the vertices in $\matrix{B}$.  This fundamental operation can be
+used to construct a wide range of graph algorithms.
+
+We extend the range of graph operations by keeping the basic
+pattern of a matrix-matrix multiplication, but varying
+the operators and the interpretation of the values in the matrices (the \emph{domain}).
+By carefully choosing operators and the domain, we control the
+relation between matrix operations familiar in linear algebra and graph operations, thereby enabling
+composable graph algorithms.
+
+In addition to matrix multiplication, the GraphBLAS math specification defines
+a range of additional operations over matrices and vectors.  These are summarized in Table~\ref{Tab:GraphBLASOps}.
+
+\begin{table}[h]
+\hrule
+\begin{center}
+\caption{A mathematical overview of the fundamental GraphBLAS operations supported
+in this specification. $\matrix{A}$, $\matrix{B}$, and $\matrix{C}$ are GraphBLAS matrices; 
+$\vector{u}$, $\vector{v}$, and $\vector{w}$ are GraphBLAS vectors; $i$ and $j$ are single indices;
+$\mathbf{i}$ and $\mathbf{j}$ are arrays of indices;
+$\oplus$ and $\otimes$ are arbitrary element-wise operators; the element-wise $\odot$
+operator is used for the optional accumulation with the output GraphBLAS object where 
+$x~\odot\hspace{-0.11cm}= y$ implies $x = x \odot y$; and $F_u()$ is a unary function.
+Although not shown here, the input 
+matrices $\matrix{A}$ and $\matrix{B}$ may be selected for transposition prior to 
+the operation, and masks can be used to control which values are written to the output GraphBLAS object.}
+\label{Tab:GraphBLASOps}
+\newcommand{\odotequals}{~\odot\hspace{-0.09cm}=\hspace{-0.2cm}}
+\begin{tabular}{l|rl}
+{\sf Operation name} & \multicolumn{2}{c}{Mathematical description}  \\
+\hline
+{\sf mxm}          & $\matrix{C}$    $\odotequals$ & $\matrix{A} \oplus.\otimes \matrix{B}$ \\
+{\sf mxv}          & $\vector{w}$    $\odotequals$ & $\matrix{A} \oplus.\otimes \vector{v}$ \\
+{\sf vxm}          & $\vector{w}^T$  $\odotequals$ & $\vector{v}^T \oplus.\otimes \matrix{A}$  \\
+{\sf eWiseMult}    & $\matrix{C}$    $\odotequals$ & $\matrix{A} \otimes \matrix{B}$ \\
+                   & $\vector{w}$    $\odotequals$ & $\vector{u} \otimes \vector{v}$ \\
+{\sf eWiseAdd}     & $\matrix{C}$    $\odotequals$ & $\matrix{A} \oplus \matrix{B}$ \\
+                   & $\vector{w}$    $\odotequals$ & $\vector{u} \oplus \vector{v}$ \\
+{\sf reduce} (row) & $\vector{w}$    $\odotequals$ & $\bigoplus_j\matrix{A}(:,j)$  \\
+{\sf apply}        & $\matrix{C}$    $\odotequals$ & $F_u(\matrix{A})$ \\
+                   & $\vector{w}$    $\odotequals$ & $F_u(\vector{u})$ \\
+{\sf transpose}    & $\matrix{C}$    $\odotequals$ & $\matrix{A}^T$ \\
+{\sf extract}      & $\matrix{C}$    $\odotequals$ & $\matrix{A}(\vector{i},\vector{j})$ \\
+                   & $\vector{w}$    $\odotequals$ & $\vector{u}(\vector{i})$ \\
+{\sf assign}       & $\matrix{C}(\vector{i},\vector{j})$  $\odotequals$ &  $\matrix{A}$ \\
+                   & $\vector{w}(\vector{i})$  $\odotequals$ & $\vector{u}$ 
+\end{tabular}
+
+\end{center}
+\hrule
+\end{table}
+
+%% << end of self-plagrism >>>
+
+In mapping the GraphBLAS as a set of mathematical operators onto the C programming language
+we made a number of fundamental choices~\cite{cspec}.  First, the core data structures required
+to represent the objects defined by the GraphBLAS are opaque.   The GraphBLAS API defines a 
+contract with the programmer for how these objects will be used, but the implementations and underlying
+data structures are left to the implementation.  This opaqueness is critical if the API is to serve diverse hardware
+ranging from CPUs to GPUs to specialized graph hardware. Second, we defined a non-blocking  
+execution model that allows lazy evaluation.  Ultimately, to optimize sparse linear algebra software we need
+to aggressively fuse operations and even restructure algorithms.  This requirement meant that we had to 
+be very careful to define when results from a sequence of graphBLAS operations must be materialized.
+
+Since the release of the GraphBLAS specification, several implementations of the graphBLAS have been
+developed.
+
+%% ToDo:  Tim Davis
+
+Describe the SuiteSparse GraphBLAS
+
+%% ToDo: Manoj and Jose
+
+Describe the IBM GraphBLAS implementation
+
+%% ToDo: Carl
+
+Describe the GunRock implementation
+
+%% ToDo: Scott, Tim M and Aydin
+
+Describe C++ libraries consistent with the GraphBLAS such as GBTL and CompBLAS.
+
+Describe Python binding.
+

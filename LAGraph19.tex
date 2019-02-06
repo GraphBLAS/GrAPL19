@@ -1,0 +1,195 @@
+\documentclass[10pt, conference, compsocconf,letter]{IEEEtran}   	
+%\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+%\geometry{letterpaper}                		% ... or a4paper or a5paper or ... 
+%\geometry{landscape}                		% Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
+						% TeX will automatically convert eps --> pdf in pdflatex
+
+\usepackage{color}
+\newcommand{\fix}[1]{\textcolor{red}{#1}}
+\newcommand{\highlight}[1]{\textcolor{red}{#1}}
+\usepackage{amssymb, amsmath}
+\usepackage{mathtools}
+\usepackage{booktabs}
+%\usepackage[noend]{algpseudocode}
+%\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{verbatim}
+\newcommand*\rot{\rotatebox{90}}
+%\usepackage[compatible]{algpseudocode}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{varwidth}
+\usepackage{multirow}
+\usepackage{rotating, xcolor}
+\usepackage{subfig}
+\usepackage{enumitem}
+%\usepackage[caption=false]{subfig}
+\usepackage[hyphens]{url}
+\usepackage{float}
+\newfloat{algorithm}{t}{lop}
+
+\usepackage{tcolorbox}
+\definecolor{mycolor}{rgb}{0.122, 0.435, 0.698}
+%\begin{tcolorbox}[width=\linewidth, boxsep=0pt, left=-4pt, boxrule=0.5pt]
+%\end{tcolorbox} 
+%\newtcolorbox{mybox}{colback=red!5!white,colframe=mycolor}
+\makeatletter
+\newcommand{\mybox}[1]{%
+  %\setbox0=\hbox{#1}%
+  %\setlength{\@tempdima}{\dimexpr\wd0+13pt}%
+  \begin{tcolorbox}[colframe=mycolor,boxrule=0.5pt,arc=4pt,
+      left=-4pt,right=6pt,top=6pt,bottom=6pt,boxsep=0pt,width=\linewidth]
+    #1
+  \end{tcolorbox}
+}
+\makeatother
+
+\algnewcommand{\LineComment}[1]{\State \(\triangleright\) #1}
+%\newcommand{\procdecl}[1]   {\proc{#1}\vrule width0pt height0pt depth 7pt \relax}
+\newcommand{\lilabel}[1]        {\label{li:#1}}
+
+\newcommand{\erdosrenyi}{Erd\H os-R\'{e}nyi }
+\newcommand{\qg}{\u{g}}
+\newcommand{\qG}{\u{G}}
+\newcommand{\qc}{\c{c}}
+\newcommand{\qC}{\c{C}}
+\newcommand{\qs}{\c{s}}
+\newcommand{\qS}{\c{S}}
+\newcommand{\qu}{\"{u}}
+\newcommand{\qU}{\"{U}}
+\newcommand{\qo}{\"{o}}
+\newcommand{\qO}{\"{O}}
+\newcommand{\qI}{\.{I}}
+\newcommand{\wa}{\^{a}}
+\newcommand{\wA}{\^{A}}
+\newcommand{\xor}{\mbox{xor}}
+\usepackage{mathtools}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\renewcommand{\floatpagefraction}{.9}
+\newcommand{\minusone}{\text{-}1}
+
+%% ABAB: Shortcuts/macros below are not used but it can be referenced as a cheatsheet
+\newcommand{\liref}[1]      {line~\ref{li:#1}}
+\newcommand{\Liref}[1]      {Line~\ref{li:#1}}
+\newcommand{\lirefs}[2]     {lines \ref{li:#1}--\ref{li:#2}}
+\newcommand{\Lirefs}[2]     {Lines \ref{li:#1}--\ref{li:#2}}
+\newcommand{\lireftwo}[2]   {lines \ref{li:#1} and~\ref{li:#2}}
+\newcommand{\lirefthree}[3] {lines \ref{li:#1}, \ref{li:#2}, and~\ref{li:#3}}
+
+\def\Cpp{C{}\texttt{++}}
+\newcommand{\mA}{\mathbf{A}} 
+\newcommand{\mL}{\mathbf{L}}
+\newcommand{\mU}{\mathbf{U}}
+\newcommand{\transpose}     {^{\mbox{\scriptsize \sf T}}}
+\newcommand{\mB}{\mathbf{B}}
+\newcommand{\mC}{\mathbf{C}}
+\newcommand{\dimN}{n}
+\newcommand{\dimM}{m}
+\newcommand{\dimK}{k}
+\newcommand{\dnzc}{\id{nzc}}
+\newcommand{\dnzr}{\id{nzr}}
+\newcommand{\dni}{\id{ni}}
+\newcommand{\dnnz}{\id{nnz}}
+\newcommand{\dsort}{\id{sort}}
+\newcommand{\dscan}{\id{scan}}
+\newcommand{\dsearch}{\id{search}}
+\newcommand{\dmin}{\func{min}}
+\newcommand{\dmax}{\func{max}}
+\newcommand{\dth}{th}
+\newcommand{\dlen}{\id{len}}
+\newcommand{\matlab}{{\sc Matlab}}
+
+%
+%TGM: included and new commands from our graphBLAS C API document
+%
+\usepackage{listings}
+\renewcommand{\vector}[1]{{\bf #1}}
+\renewcommand{\matrix}[1]{{\bf #1}}
+\renewcommand{\arg}[1]{{\sf #1}}
+\newcommand{\zip}{{\mbox{zip}}}
+\newcommand{\zap}{{\mbox{zap}}}
+\newcommand{\ewiseadd}{{\mbox{\bf ewiseadd}}}
+\newcommand{\ewisemult}{{\mbox{\bf ewisemult}}}
+\newcommand{\mxm}{{\mbox{\bf mxm}}}
+\newcommand{\vxm}{{\mbox{\bf vxm}}}
+\newcommand{\mxv}{{\mbox{\bf mxv}}}
+\newcommand{\gpit}[1]{{\sf #1}}
+\newcommand{\ie}{\emph{i.e.}}
+\newcommand{\eg}{\emph{e.g.}}
+\newcommand{\nan}{{\sf NaN}}
+\newcommand{\nil}{{\bf nil}}
+\newcommand{\ifif}{{\bf if}}
+\newcommand{\ifthen}{{\bf then}}
+\newcommand{\ifelse}{{\bf else}}
+\newcommand{\ifendif}{{\bf endif}}
+\newcommand{\zero}{{\bf 0}}
+\newcommand{\one}{{\bf 1}}
+\newcommand{\true}{{\sf true}}
+\newcommand{\false}{{\sf false}}
+\newcommand{\syntax}{{C Syntax}}
+%%%%%%
+
+%\input{algobox}
+
+\title{LAGraph: A Community Effort to Collect Graph Algorithms built on top of the GraphBLAS}
+
+
+\author{
+Tim Mattson$^\ddag$, Tim Davis$^\diamond$, Manoj Kumar$^\P$, Ayd\i n Bulu\qc$^\dag$, Scott McMillan$^\S$, Jos\'e Moreira$^\P$, Carl Yang$^{*,\dag}$ \\
+\\
+
+ \normalsize
+ {\em $^\ddag$Intel Corporation}  {\em $^\dag$Computational Research Division, Lawrence Berkeley National Laboratory} \\
+{\em $^\diamond$Texas A and M University} ~~ {\em $\P$IBM Corporation}~~ {\em $\S$Software Engineering Institute, Carnegie Mellon University}   \\
+{\em $^*$Electrical and Computer Engineering Department, University of California, Davis}
+ }
+
+
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+
+In 2013, we released a position paper to launch a community effort to define a 
+common set of building blocks for constructing graph algorithms ``in the language of Linear Algebra''.
+This led to the GraphBLAS.   We released a specification for the C programming language binding to the
+GraphBLAS in 2017.  Since that release, multiple libraries that conform to the 
+GraphBLAS C specification have been produced.
+
+In this position paper, we launch the next phase of this ongoing community effort; a project to
+assemble a set of high level graph algorithms built on top of the GraphBLAS.  While many 
+of these algorithms are well-known with high quality implementations available,
+they have not been assembled in one place and integrated with the GraphBLAS.  We call 
+this project the LAGraph graph algorithm project and with this position paper, put out a 
+call for collaborators to join us.  While the initial goal is to just assemble
+these algorithms, we hope in the long run this effort will result production worthy code;
+with the LAGraph library serving as an open source repository of verified graph algorithms that use the
+GraphBLAS. 
+
+\end{abstract}
+
+\begin{IEEEkeywords}
+Graph Algorithms, Linear Algebra, GraphBLAS
+\end{IEEEkeywords}
+
+\input{intro}
+
+\input{GraphBLAS}
+
+\input{LAGraphStruct}
+
+\input{disc}
+
+\input{conclusion}
+
+\section*{Acknowledgments}
+Ayd\i n Bulu\qc\, Tim Davis, Carl Yang and maybe Scott will need to acknowledge someone.
+
+\bibliographystyle{IEEEtran}
+\bibliography{LAGraph19}
+
+\end{document}  

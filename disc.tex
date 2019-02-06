@@ -1,0 +1,50 @@
+\section{Discussion}
+\label{sec:disc}
+
+We are early in the LAGraph project.  At this point, we've defined the basic structure of the
+repository and the overall goals of the project. We have built an early framework for testing
+and core utility routines to support software development.  Finally, we assembled a few algorithms which we
+are using to test the basic structure of the software system.
+
+Even at this early phase of the project, we have learned a great deal about how the GraphBLAS
+will interact with end-users.  The objects manipulated by the GraphBLAS are opaque.  An implementation
+needs complete freedom in how data structures underlying the GraphBLAS are implemented.  
+A graph algorithm, however, is used as part of a processing pipeline.  For example, data may
+exist in data frames.  A subset of the data is collected and filtered to produce relationships
+represented by a graph. Properties of the graph are computed and based on the result 
+a new branch in the processing pipeline may be accessed.  
+
+The key here is that graphs inside the GraphBLAS are opaque, but externally they are 
+anything but opaque.  This suggests that we need to define functions to import and export 
+data in standard sparse array formats into LAGraph.   The initial thinking was that this
+import functionality would be part of LAGraph and not the GraphBLAS.  The only way to 
+do that, however, is if we repacked the input sparse format into separate arrays for column 
+indices, row indices, and values and then use GrB\_build\_matrix() to construct the graphBLAS
+matrix object.  This would extremely inefficient.  We need a way to directly import arrays 
+in standard sparse formats into the GraphBLAS and since the GraphBLAS data types are
+opaque, this can only be done as a GraphBLAS routine.  
+
+Graph algorithms do not occur in isolation.   The LAGraph library, therefore, needs to 
+return a handle to an opaque GraphBLAS object so it can be used without incurring copy overhead
+in subsequent graph operations.  Given the nonblocking execution model, this raises interesting
+design questions about how memory consistency between the library and the application is
+managed.  
+
+Graphs can be quite large.   Hence, we do not believe the default mode should be that 
+sparse arrays input to LAGraph are copied into a separate memory region to hold the 
+opaque GraphBLAS object.  We believe it is important that the memory for the input array
+be used to hold the graphBLAS object. This means the input array is destroyed and replaced
+with the graphBLAS opaque object.  Since during a computation it is common that elements of a
+matrix fill-in, the GraphBLAS routines will in some cases need to allocate additional memory during a 
+calculation.  This may require deallocating memory and reallocating a larger block of memory.
+This means we will likely encounter situations where a region of memory allocated in an application
+is deallocated inside a library routine.  This violates the separation of concerns between application
+and library code expected in well engineered software. There is also the question of communicating
+to the library routine how the input sparse array was allocated in the first place so the right deallocator 
+can be used.
+
+The point of these issues is that in designing an effective library, there are a host of 
+complicated issues to resolve.  A major part of the research contribution of this project will
+be how we solve this complicated problems.
+
+
