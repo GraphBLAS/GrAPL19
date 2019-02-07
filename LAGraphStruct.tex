@@ -19,15 +19,17 @@ across an engaged community, we will produce the library of algorithms needed to
 effectiveness of the GraphBLAS approach.
 
 Before we can conduct such experiments, however, we need to collect graph algorithms implemented on 
-top of the GraphBLAS. We have created a git hub repository for members of the LAGraph community to 
+top of the GraphBLAS. We have created a git hub repository at
+\url{https://github.com/GraphBLAS/LAGraph} for members of the LAGraph community to 
 use to contribute GraphBLAS algorithms. The basic elements of the repository include:
-%% ToDo: check line by line against the repository and make sure this is complete
+%% DONE: this is complete:
 \begin{itemize}
 \item A Build System for creating the LAGraph library and the test routines.
-\item A library of utilities for loading matrices from disk and evaluating results
+\item A library of utilities including loading matrices from disk in Matrix Market format \cite{MM},
+    evaluating results, and creating random test matrices.
 \item A directory of graph algorithms.
-\item A directory holdling a test harness for each alorithm
+\item A directory holding a test harness for each algorithm.
 \end{itemize}
 
-We will write documentation, a programer's reference guide and define procedures for how people
+We will write documentation, a programmer's reference guide and define procedures for how people
 can add new algorithms.  

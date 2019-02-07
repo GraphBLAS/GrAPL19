@@ -73,27 +73,20 @@ data structures are left to the implementation.  This opaqueness is critical if 
 ranging from CPUs to GPUs to specialized graph hardware. Second, we defined a non-blocking  
 execution model that allows lazy evaluation.  Ultimately, to optimize sparse linear algebra software we need
 to aggressively fuse operations and even restructure algorithms.  This requirement meant that we had to 
-be very careful to define when results from a sequence of graphBLAS operations must be materialized.
+be very careful to define when results from a sequence of GraphBLAS operations must be materialized.
 
-Since the release of the GraphBLAS specification, several implementations of the graphBLAS have been
+Since the release of the GraphBLAS specification, several implementations of the GraphBLAS have been
 developed.
 
-%% ToDo:  Tim Davis
-
-% Describe the SuiteSparse GraphBLAS
+% SuiteSparse GraphBLAS:
 \input{suitesparse.tex}
 
-%% ToDo: Manoj and Jose
+% IBM GraphBLAS:
+\input{IBM.tex}
 
-Describe the IBM GraphBLAS implementation
+% Gunrock GraphBLAS:
+\input{Gunrock.tex}
 
-%% ToDo: Carl
-
-Describe the GunRock implementation
-
-%% ToDo: Scott, Tim M and Aydin
-
-Describe C++ libraries consistent with the GraphBLAS such as GBTL and CompBLAS.
-
-Describe Python binding.
+% GBTL: GraphBLAS Template Library
+\input{GBTL.tex}
 

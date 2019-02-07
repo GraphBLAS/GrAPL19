@@ -19,7 +19,7 @@ anything but opaque.  This suggests that we need to define functions to import a
 data in standard sparse array formats into LAGraph.   The initial thinking was that this
 import functionality would be part of LAGraph and not the GraphBLAS.  The only way to 
 do that, however, is if we repacked the input sparse format into separate arrays for column 
-indices, row indices, and values and then use GrB\_build\_matrix() to construct the graphBLAS
+indices, row indices, and values and then use \verb'GrB_build_matrix' to construct the GraphBLAS
 matrix object.  This would extremely inefficient.  We need a way to directly import arrays 
 in standard sparse formats into the GraphBLAS and since the GraphBLAS data types are
 opaque, this can only be done as a GraphBLAS routine.  
@@ -33,8 +33,9 @@ managed.
 Graphs can be quite large.   Hence, we do not believe the default mode should be that 
 sparse arrays input to LAGraph are copied into a separate memory region to hold the 
 opaque GraphBLAS object.  We believe it is important that the memory for the input array
-be used to hold the graphBLAS object. This means the input array is destroyed and replaced
-with the graphBLAS opaque object.  Since during a computation it is common that elements of a
+be used to hold the GraphBLAS object. This means the input array is ``destroyed''
+(from the perspective of the external library or user application) and replaced
+with the GraphBLAS opaque object.  Since during a computation it is common that elements of a
 matrix fill-in, the GraphBLAS routines will in some cases need to allocate additional memory during a 
 calculation.  This may require deallocating memory and reallocating a larger block of memory.
 This means we will likely encounter situations where a region of memory allocated in an application
@@ -42,6 +43,46 @@ is deallocated inside a library routine.  This violates the separation of concer
 and library code expected in well engineered software. There is also the question of communicating
 to the library routine how the input sparse array was allocated in the first place so the right deallocator 
 can be used.
+
+A draft of SuiteSparse:GraphBLAS includes a working and fully-tested
+implementation of the import/export feature, using a strategy much like the
+``move constructor'' of C++.  For the export of a CSC matrix, for example,
+three arrays are removed from the GraphBLAS matrix \verb'A': a pointer array
+\verb'Ap' of size \verb'n+1', an index array \verb'Ai' of size \verb'e', and a
+values array \verb'Ax'.  The row indices of the  \verb'j'th column of the
+matrix appear as the list \verb'Ai[Ap[j]...Ap[j+1]]', and the values are in the
+same locations in \verb'Ax' \cite{Davis06book}.
+
+The remains of the GraphBLAS object \verb'A' are then deleted, but all of its
+content is now ``owned'' by the external library (LAGraph, say), which is then
+responsible for freeing these three arrays.  Assuming that the opaque GraphBLAS
+object \verb'A' is already in the CSC format, the export takes just $O(1)$
+time, and no new memory is allocated.  The external library now has access to
+the graph.  If the GraphBLAS library does not support the CSC format
+internally, it can allocate these arrays, populate them, and then free
+\verb'A'.  The effect is the same; only the performance differs.
+
+The import is symmetric with the export:  LAGraph (or any other external
+library) passes in the three arrays \verb'Ap', \verb'Ai', and \verb'Ax', which
+are then either incorporated as-is into the \verb'GrB_Matrix A' (taking $O(1)$
+time), or copied and freed.  Either way, the three arrays are now owned by
+GraphBLAS, not the external library, and would be freed at some point no later
+than \verb'GrB_free(&A)'.  Since the matrix \verb'A' is opaque, the GraphBLAS
+library can select whatever method it chooses to take ownership of \verb'Ap',
+\verb'Ai', and \verb'Ax'.  It may choose later to \verb'realloc' them if the
+number of entries needs to grow.
+
+After an export of \verb'A', and then an import of the same arrays, the
+GraphBLAS matrix \verb'A' is perfectly reconstructed, ideally in a total of
+$O(1)$ time.  SuiteSparse:GraphBLAS supports the import/export of all four of
+its formats: CSR, CSC, and their hypersparse variants.
+
+A \verb'malloc' of these \verb'Ap', \verb'Ai', and \verb'Ax' arrays by an
+external library followed by a freeing of the same space inside GraphBLAS with
+\verb'GrB_free(&A)' requires both libraries to agree on using the same
+\verb'malloc/free' routines.  To do this, the GraphBLAS API would need to be
+augmented to allow an external library to select which \verb'malloc/free'
+routines should be used.
 
 The point of these issues is that in designing an effective library, there are a host of 
 complicated issues to resolve.  A major part of the research contribution of this project will

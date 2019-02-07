@@ -75,14 +75,33 @@ J.~Kepner, P.~Aaltonen, D.~Bader, A.~Bulu\c{c}, F.~Franchetti, J.~Gilbert,
 
 \bibitem{cspec}
 A.~Bulu\c{c}, T.~Mattson, S.~McMillan, J.~Moreira, and C.~Yang, ``Design of the
-  graphblas api for c,'' in \emph{Graph Algorithms Building Blocks workshop at
-  IPDPS (GABB)}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, 2017.
+  {GraphBLAS} {API} for {C},'' in \emph{Graph Algorithms Building Blocks
+  workshop at IPDPS (GABB)}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, 2017.
 
-\bibitem{suiteSparse}
-``The suite sparse graphblas library,''
-  \url{http://faculty.cse.tamu.edu/davis/suitesparse.html}.
+\bibitem{Davis19}
+T.~A. Davis, ``Algorithm 9xx: {SuiteSparse:GraphBLAS:} graph algorithms in the
+  language of sparse linear algebra,'' \emph{ACM Trans. Math. Software}, 2019
+  (under submission), see \url{http://suitesparse.com}.
+
+\bibitem{BulucGilbert08}
+A.~Bulu\c{c} and J.~R. Gilbert, ``On the representation and multiplication of
+  hypersparse matrices,'' in \emph{2008 IEEE International Symposium on
+  Parallel and Distributed Processing}, April 2008, pp. 1--11.
+
+\bibitem{Gustavson78}
+F.~G. Gustavson, ``Two fast algorithms for sparse matrices: Multiplication and
+  permuted transposition,'' \emph{ACM Trans. Math. Softw.}, vol.~4, no.~3, pp.
+  250--269, 1978.
+
+\bibitem{MM}
+R.~F. Boisvert, R.~Pozo, and K.~A. Remington, ``The {Matrix Market} exchange
+  formats: initial design,'' Tech. Rep. NISTIR 5935, 1996.
+
+\bibitem{Davis06book}
+T.~A. Davis, \emph{Direct Methods for Sparse Linear Systems}.\hskip 1em plus
+  0.5em minus 0.4em\relax Philadelphia, PA: SIAM, 2006.
 
 \bibitem{ibmGraphBLAS}
-``Ibm's graphblas implementation,'' \url{http://graphblas.org/}.
+``{IBM}'s {GraphBLAS} implementation,'' \url{http://graphblas.org/}.
 
 \end{thebibliography}
