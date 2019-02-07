@@ -2,16 +2,9 @@
 \subsection{SuiteSparse:GraphBLAS}
 
 SuiteSparse:GraphBLAS is the first full implementation of the GraphBLAS
-standard, and is available at \url{http://suitesparse.com}
-\cite{Davis19}.
-% , which
-% defines a set of sparse matrix operations on an extended algebra of semirings
-% using an almost unlimited variety of operators and types.  When applied to
-% sparse adjacency matrices, these algebraic operations are equivalent to
-% computations on graphs.  GraphBLAS provides a powerful and expressive framework
-% for creating graph algorithms based on the elegant mathematics of sparse matrix
-% operations on a semiring.
-%
+standard, first released in November of 2017.
+It is available at \url{http://suitesparse.com} \cite{Davis19}.
+
 The design of a GraphBLAS library is flexible, because its data structures are
 opaque to the user.  SuiteSparse:GraphBLAS uses a compressed-sparse vector
 data structure, in four different forms.  A matrix can be stored in
@@ -23,7 +16,7 @@ where each row (or column) starts.  The memory taken is $O(n+e)$ for a CSR
 matrix with $n$ rows or a CSC matrix with $n$ columns, and with $e$ entries.
 Most graphs have $e=O(n)$ entries, but some graphs (and in particular,
 subgraphs) can be {\em hypersparse} \cite{BulucGilbert08}, with $e << n$.  In
-the hypersparse form, the pointer array itself becomes sparse, and non-empty
+the hypersparse form, the pointer array itself becomes sparse, and empty
 vectors take no space at all.  The space is reduced to $O(e)$, so that
 matrices with enormous dimensions can be created, as long as $e << n$.
 SuiteSparse:GraphBLAS exploits hypersparsity automatically, and all
@@ -49,30 +42,34 @@ a \verb'GrB_build' when the matrix needs to be completed.
 To enable high-performance matrix-matrix multiply, a code generation mechanism
 is used to build functions for each semiring that can be created with built-in
 operators.  The functions can rely on Gustavson's method \cite{Gustavson78}, a
-dot product method, and heap-based method, all with masked variants.  A current
-prototype of the package adds an early exit mechanism for the MIN, MAX, OR, and
-AND monoids, where a dot product can terminate as soon as a terminal value is
-found in the result (\verb'true' for OR, for example).  This will enable a fast
-direct-optimizing BFS to be written, where the ``pull'' is a dot product, and
-the ``push'' a saxpy-based operation (Gustavson's or the heap method).
+dot product method, and a heap-based method \cite{sisc3dspgemm}, all with
+masked variants.  A current prototype of the package adds an early exit
+mechanism for the MIN, MAX, OR, and AND monoids, where a dot product can
+terminate as soon as a terminal value is found in the result (\verb'true' for
+OR, for example).  This will enable a fast direction-optimizing BFS
+\cite{Beamer:2012:DOB} to be written in GraphBLAS.  The ``pull'' is a dot
+product, and the ``push'' a saxpy-based operation (Gustavson's or the heap
+method).
 
-Since its implementation was requested as the GraphBLAS reference
-implementation, testing is a vital component to the package.  In
-SuiteSparse:GraphBLAS, each GraphBLAS operation was written twice: once in
-high-performance algorithms in C, and again in a very simple and short MATLAB
-script, using dense matrices with of the required type.  For example,
-\verb'GrB_assign' requires about 3,908 lines of C (not counting comments), but
-only 161 lines in MATLAB.  The pattern in the MATLAB version is held as a
-separate Boolean matrix.  The MATLAB functions are not intended to be fast.
-Instead, they exactly mimic the GraphBLAS API Specification, line by line, so
-they can be visually inspected for conformance to the spec.  For example,
-matrix multiply is written with a triply-nested \verb'for' loop.  Then, to test
-the package, each computation is done in SuiteSparse:GraphBLAS (via a MATLAB
-interface) and in the MATLAB mimic.  The tests pass only if the results are
-identical in both value and pattern (even with identical floating-point
-roundoff error, in most cases).
+Since its creation was commissioned as the GraphBLAS reference implementation,
+testing is a vital component to the package.  In SuiteSparse:GraphBLAS, each
+GraphBLAS operation was written twice: once in high-performance algorithms in
+C, and again in a very simple and short MATLAB script, using dense matrices
+with the required type.  The pattern in the MATLAB version is held as a
+separate Boolean matrix.  For example, \verb'GrB_assign' requires about 3,908
+lines of C (not counting comments), but only 161 lines in MATLAB. Of those 161
+lines, 33 are for error-checking that do not need to be considered when
+determining conformance to the spec.  The MATLAB functions are not intended to
+be fast.  Instead, they exactly mimic the GraphBLAS API Specification, line by
+line, so they can be visually inspected for conformance to the spec.  For
+example, matrix multiply is written with a brute-force triply-nested \verb'for'
+loop.  Then, to test the package, each computation is done both in
+SuiteSparse:GraphBLAS (via a MATLAB interface) and in the MATLAB mimic.  The
+tests pass only if the results are identical in both value and pattern (even
+with identical floating-point roundoff error, in most cases).
 
-SuiteSparse:GraphBLAS appears in Debian and Ubuntu Linux distros, and has been
-released as part of the RedisGraph database module of the Redis database
-systems, by RedisLabs, Inc.  (\url{https://oss.redislabs.com/redisgraph/}).
+The current release is single-threaded, but an OpenMP implementation is in
+progress.  SuiteSparse:GraphBLAS appears in Debian and Ubuntu Linux distros,
+and has been released as part of the RedisGraph database module of the Redis
+database systems, by RedisLabs, Inc. \cite{redisgraph}.
 

@@ -10,9 +10,7 @@ To support direction-optimization, the GraphBLAST backend maintains a SparseVect
 
 \begin{figure}[t]
 	\includegraphics[width=\linewidth]{fig/graphblast}
-	\label{fig:graphblast}
-	\caption
-	{\textbf{GraphBLAST Vector UML diagram.}}
+	\caption{\textbf{GraphBLAST Vector UML diagram.}\label{fig:graphblast}}
 \end{figure}
 
 Direction-optimization is a good example where the power of abstracting away implementation details shines through, and the linear algebraic approach to graph analytics is at its most powerful. The end user has two conflicting desires:
@@ -37,4 +35,5 @@ Table~\ref{tab:loc} shows a comparison of how many lines of code it takes an imp
 	\end{tabular}
 	\caption{Comparison of lines of C++ application code counted by `cloc' except for numbers of GraphIt, which come from the paper~\cite{Zhang:2018:GHP}. N/A means not implemented. The specific GraphBLAS implementation for this comparison is GraphBLAST~\cite{Yang:2019:GBL}.\label{tab:loc}}
 		%\vspace{-2em}
+\hrule
 \end{table}

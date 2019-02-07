@@ -34,7 +34,7 @@ Graphs can be quite large.   Hence, we do not believe the default mode should be
 sparse arrays input to LAGraph are copied into a separate memory region to hold the 
 opaque GraphBLAS object.  We believe it is important that the memory for the input array
 be used to hold the GraphBLAS object. This means the input array is ``destroyed''
-(from the perspective of the external library or user application) and replaced
+(from the perspective of LAGraph, another external library, or the user application) and replaced
 with the GraphBLAS opaque object.  Since during a computation it is common that elements of a
 matrix fill-in, the GraphBLAS routines will in some cases need to allocate additional memory during a 
 calculation.  This may require deallocating memory and reallocating a larger block of memory.
@@ -51,26 +51,32 @@ three arrays are removed from the GraphBLAS matrix \verb'A': a pointer array
 \verb'Ap' of size \verb'n+1', an index array \verb'Ai' of size \verb'e', and a
 values array \verb'Ax'.  The row indices of the  \verb'j'th column of the
 matrix appear as the list \verb'Ai[Ap[j]...Ap[j+1]]', and the values are in the
-same locations in \verb'Ax' \cite{Davis06book}.
+same locations in \verb'Ax'.  This format is identical to the simple CSC sparse
+matrix data structure in CSparse \cite{Davis06book}, except that GraphBLAS
+allows for many built-in types and arbitrary user-defined types.
 
 The remains of the GraphBLAS object \verb'A' are then deleted, but all of its
 content is now ``owned'' by the external library (LAGraph, say), which is then
 responsible for freeing these three arrays.  Assuming that the opaque GraphBLAS
 object \verb'A' is already in the CSC format, the export takes just $O(1)$
-time, and no new memory is allocated.  The external library now has access to
-the graph.  If the GraphBLAS library does not support the CSC format
-internally, it can allocate these arrays, populate them, and then free
-\verb'A'.  The effect is the same; only the performance differs.
+time, and no new memory is allocated.  The external library (LAGraph, in
+particular) now has access to the graph.  If the GraphBLAS implementation does
+not support the CSC format in its internal opaque data structure, it can
+allocate these arrays, populate them, and then free \verb'A'.  The effect is
+the same; only the performance differs.  Opacity is maintained, while at the
+same time reducing time required for the export from $\Omega(e)$ (for
+\verb'GrB_extractTuples') to as little as $O(1)$.
 
 The import is symmetric with the export:  LAGraph (or any other external
 library) passes in the three arrays \verb'Ap', \verb'Ai', and \verb'Ax', which
 are then either incorporated as-is into the \verb'GrB_Matrix A' (taking $O(1)$
-time), or copied and freed.  Either way, the three arrays are now owned by
-GraphBLAS, not the external library, and would be freed at some point no later
-than \verb'GrB_free(&A)'.  Since the matrix \verb'A' is opaque, the GraphBLAS
-library can select whatever method it chooses to take ownership of \verb'Ap',
-\verb'Ai', and \verb'Ax'.  It may choose later to \verb'realloc' them if the
-number of entries needs to grow.
+time), or copied and freed (taking $O(e)$ time and memory).  Either way, the
+three arrays are now owned by GraphBLAS, not the external library, and would be
+freed at some point no later than \verb'GrB_free(&A)'.  Since the matrix
+\verb'A' is opaque, the GraphBLAS library can select whatever method it chooses
+to take ownership of \verb'Ap', \verb'Ai', and \verb'Ax': a copy (in $O(e)$
+time, or a move construction in $O(1)$ time.  It may choose later to
+\verb'realloc' these arrays if the number of entries needs to grow.
 
 After an export of \verb'A', and then an import of the same arrays, the
 GraphBLAS matrix \verb'A' is perfectly reconstructed, ideally in a total of
@@ -86,6 +92,5 @@ routines should be used.
 
 The point of these issues is that in designing an effective library, there are a host of 
 complicated issues to resolve.  A major part of the research contribution of this project will
-be how we solve this complicated problems.
-
+be how we solve these issues.
 
