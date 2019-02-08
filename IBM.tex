@@ -4,11 +4,11 @@
 
 The IBM GraphBLAS implementation was announced at IPDPS 2018 and made
 available at \code{https://github.com/IBM/ibmgraphblas}, fulfilling
-the GraphBLAS C API requirement of two confomring implementations,
+the GraphBLAS C API requirement of two conforming implementations,
 and promoting that specification from \emph{provisional} to
 \emph{definitive}. The approach adopted by the development team was
 heavily influenced by their experience with IBM's Graph Programming
-Interface~\cite{gpi2016,GPI}
+Interface~\cite{gpi2016,GPI}.
 
 Among the various objectives of the IBM implementation, we note the
 desire to experiment with an implementation that allows multiple data
@@ -30,7 +30,7 @@ convert the polymorphic version of the API into the nonpolymorphic
 one. The nonpolymorphic methods are then directly supported by the
 library. Conversion of the polymorphic interface is accomplished through
 standard C preprocessor features, primarily in supporting number of
-arguments polymorphosm, in combination with the standard C11 language
+arguments polymorphism, in combination with the standard C11 language
 \code{\_Generic} construct to support type polymorphism.
 
 As previously mentioned, the IBM GraphBLAS library is implemented in

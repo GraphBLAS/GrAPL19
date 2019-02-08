@@ -50,7 +50,7 @@ def bfs(graph, frontier, levels):
         depth += 1
         levels[front][:] = depth
         with gb.LogicalSemiring, gb.Replace:
-            frontier[~levels] = graph.T @ frontier 
+            frontier[~levels] = graph.T@frontier
 \end{verbatim}
 }
 \caption{\textbf{Depth-BFS function in pyGB.}\label{code:pyGB}}
