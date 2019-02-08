@@ -4,13 +4,14 @@
 
 
 Graphs are an essential abstraction for a wide range of problems.  There are 
-many ways to represent algorithms over graphs.  One class of methods defines
-graphs in terms of matrices.  For example, we can define a graph in terms of an 
-adjacency matrix where the rows and columns are labeled by the vertices and the
-non-zero elements of the matrix are the edges between vertices.  
-
-Expressing graph algorithms in the ``language of linear
-algebra''~\cite{kepner2011graph} is a mature subject.  Multiple 
+many ways to represent graphs in large graph analytics.  One class of methods defines
+graphs in terms of adjacency matrices.
+% For example, we can define a graph in terms of an 
+% adjacency matrix where the rows and columns are labeled by the vertices and the
+% non-zero elements of the matrix are the edges between vertices.  
+% 
+Expressing graph algorithms as linear algebra expressions ~\cite{kepner2011graph}
+is a mature subject.  Multiple 
 high performance graph libraries based on sparse 
 linear algebra~\cite{combblas,
 gadepally2015graphulo, gpi2016, sundaram2015graphmat,che2016programming}
@@ -20,7 +21,7 @@ blocks for graphs expressed in the language of linear algebra.  They launched
 this effort with a position paper~\cite{hpec13} in 2013 and formed the GraphBLAS
 Forum~\cite{graphblas_web}.  After almost three years of steady work,
 the GraphBLAS forum completed the
-mathematical formalizations of the GraphBLAS~\cite{mathgraphblas16}. With another 
+mathematical formalization of the GraphBLAS~\cite{mathgraphblas16}. With another 
 one and a half years of work, the group completed the C
 language binding to the GraphBLAS~\cite{cspec}.
 
@@ -51,10 +52,10 @@ Furthermore, the developers of the graph algorithm libraries will need a test ha
 validate the algorithms, I/O utilities, and a build system.  All of these components must
 be addressed as part of the LAGraph project. 
 
-Initially, LAGraph is not intended to be a production-worthy library of 
-high level graph algorithms.  We expect over time, however, that from the LAGraph 
-effort, we will produce such a library.  Anticipating that goal, we are constructing
-the library ``as if'' it was to be used by data analytics end-users. That is, by people
+LAGraph may not be a production-worthy library in its first incarnation,  
+However, we expect the LAGraph effort to produce such a library over time.  
+Anticipating that goal, we are constructing
+the library ``as if'' it will be used by data analytics end-users. That is, by people
 who need the results from graph algorithms with little concern for how they are
 implemented.  This requirement of building a library for \emph{end-users} as opposed to 
 a library for \emph{graph algorithm researchers} has far reaching implications for the 
@@ -73,8 +74,8 @@ We start the paper with a brief summary of the objects and operations defined in
 the C specification of the GraphBLAS.  We then  summarize some of the 
 early libraries that implement the GraphBLAS C specification.  Next, we describe
 the repository where we will build LAGraph.  This is important since the
-purpose of a position paper is to attract a community of researchers to join the effort
-which means we want people to understand how to work with and perhaps contribute 
+purpose of a position paper is to attract a community of researchers to join the effort,
+which in turn means we want people to understand how to work with and perhaps contribute 
 algorithms to the repository.  We then discuss the challenges we faced in writing the 
 early version LAGraph and what it suggests about future developments needed in the
 GraphBLAS themselves. We close with concluding remarks.

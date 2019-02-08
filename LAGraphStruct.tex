@@ -3,15 +3,25 @@
 
 The hypothesis underlying the GraphBLAS is that algorithm designers can focus on expressing their algorithms
 in terms of the high level linear algebra operations defined in the GraphBLAS while leaving low level
-optimizations to any particular hardware platform to the implementor of the GraphBLAS.  Ultimately, 
+optimizations to any particular hardware platform to the implementation of the GraphBLAS.  Ultimately, 
 we want hardware vendors to be responsible for creating highly tuned versions of the GraphBLAS
 specialized to the features of their systems.
+In~\cite{KuHPEC2016} the authors show that mitigating the adverse impact of memory
+latency on performance of algorithms for large graph can lead to significant improvements.
+Such optimizations require detailed knowledge of the underlying system, and hence the 
+the low level optimizations are best left to hardware vendors.
+Furthermore, in~\cite{KuJour} the authors show that a tuned linear algebra library delivers
+better performance than straight-forward textbook implementation on many basic graph algorithms.
 
 Algorithm designers will naturally wonder how much performance is lost due to the use of a high 
-level API such as the GraphBLAS.  We believe the GraphBLAS bring inherent efficiency advantages to 
-a graph algorithms due to the more structured access to data afforded by the sparse linear algebra 
-formats.  This is an untested hypothesis, however, since until now, we have not had multiple 
-implementations of a high level API tuned to the features of a range of platforms.
+level API such as the GraphBLAS.  As shown in~\cite{jwHPEC}, a linear algebra 
+implementation brings inherent efficiency advantages to 
+graph algorithms due to the more structured access to data afforded by the linear algebra 
+formulation.
+The GraphBLAS API is more general, but we expect its implementations to retain or improve upon
+the efficiency advantages.
+This is an untested hypothesis, since until now, we have not had multiple 
+implementations of the GraphBLAS API tuned to the features of a range of platforms.
 
 Testing this hypothesis of the performance potential afforded by the GraphBLAS is a major outcome
 we anticipate from the LAGraph project.  By collecting high level graph algorithms and validating them
