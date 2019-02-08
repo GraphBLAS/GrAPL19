@@ -6,18 +6,18 @@ in terms of the high level linear algebra operations defined in the GraphBLAS wh
 optimizations to any particular hardware platform to the implementation of the GraphBLAS.  Ultimately, 
 we want hardware vendors to be responsible for creating highly tuned versions of the GraphBLAS
 specialized to the features of their systems.
-In~\cite{KuHPEC2016} the authors show that mitigating the adverse impact of memory
+Kumar et al.~\cite{KuHPEC2016} show that mitigating the adverse impact of memory
 latency on performance of algorithms for large graph can lead to significant improvements.
 Such optimizations require detailed knowledge of the underlying system, and hence the 
 the low level optimizations are best left to hardware vendors.
-Furthermore, in~\cite{KuJour} the authors show that a tuned linear algebra library delivers
-better performance than straight-forward textbook implementation on many basic graph algorithms.
+Furthermore, a tuned linear algebra library delivers
+better performance than straight-forward textbook implementation on many basic graph algorithms~\cite{KuJour}.
 
 Algorithm designers will naturally wonder how much performance is lost due to the use of a high 
 level API such as the GraphBLAS.  As shown in~\cite{KuJour}, a linear algebra 
 implementation brings inherent efficiency advantages to 
 graph algorithms due to the more structured access to data afforded by the linear algebra 
-formulation.
+formulation~\cite{KuJour}.
 The GraphBLAS API is more general, but we expect its implementations to retain or improve upon
 the efficiency advantages.
 This is an untested hypothesis, since until now, we have not had multiple 
@@ -35,7 +35,7 @@ use to contribute GraphBLAS algorithms. The basic elements of the repository inc
 %% DONE: this is complete:
 \begin{itemize}
 \item A Build System for creating the LAGraph library and the test routines.
-\item A library of utilities including loading matrices from disk in Matrix Market format \cite{MM},
+\item A library of utilities including loading matrices from disk in Matrix Market format~\cite{MM},
     evaluating results, and creating random test matrices.
 \item A directory of graph algorithms.
 \item A directory holding a test harness for each algorithm.

@@ -68,6 +68,12 @@ SuiteSparse:GraphBLAS (via a MATLAB interface) and in the MATLAB mimic.  The
 tests pass only if the results are identical in both value and pattern (even
 with identical floating-point roundoff error, in most cases).
 
+The package is extremely robust, and fully compliant with the GraphBLAS C API.
+Excluding SuiteSparse-specific extensions and beta releases, there have been
+only 3 bugs in the entire package since its first release, two of which would
+be triggered in only rare cases.  All three bugs are fixed, and the current
+version has no known bugs.
+
 The current release is single-threaded, but an OpenMP implementation is in
 progress.  SuiteSparse:GraphBLAS appears in Debian and Ubuntu Linux distros,
 and has been released as part of the RedisGraph database module of the Redis
