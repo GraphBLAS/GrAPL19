@@ -4,7 +4,7 @@
 
 
 Graphs are an essential abstraction for a wide range of problems.  There are 
-many ways to represent graphs in large graph analytics.  One class of methods defines
+many ways to represent graphs in graph analytics.  One class of methods defines
 graphs in terms of adjacency matrices.
 % For example, we can define a graph in terms of an 
 % adjacency matrix where the rows and columns are labeled by the vertices and the
@@ -19,7 +19,7 @@ have been developed.   With this ``Graphs as Linear Algebra'' approach establish
 a community of researchers came together to define common building
 blocks for graphs expressed in the language of linear algebra.  They launched
 this effort with a position paper~\cite{hpec13} in 2013 and formed the GraphBLAS
-Forum~\cite{graphblas_web}.  After almost three years of steady work,
+Forum~\cite{graphblas_web}.  After  three years of steady work,
 the GraphBLAS forum completed the
 mathematical formalization of the GraphBLAS~\cite{mathgraphblas16}. With another 
 one and a half years of work, the group completed the C
@@ -28,12 +28,12 @@ language binding to the GraphBLAS~\cite{cspec}.
 Currently there are multiple implementations of the GraphBLAS C specification.  
 We have learned a great deal about how to define the operations within the GraphBLAS 
 and how to implement them efficiently.  We are now ready to launch the next phase of the project:
-to produce a library of high level graph algorithms implemented on top of the GraphBLAS.
+to produce a library of high-level graph algorithms implemented on top of the GraphBLAS.
 We call this library of algorithms \emph{LAGraph}.
 Just as we launched the GraphBLAS project with a position paper, we are launching 
 this next phase of the project with a position paper.  
 
-The goals of the LAGraph effort include, first and foremost, to bring together the full 
+The goals of the LAGraph effort include, first and foremost, bringing together the full 
 range of known graph algorithms that can be constructed with the GraphBLAS.
 From this collection we will be able to systematically assess the coverage of 
 graph algorithms based on linear algebra. This will also serve
@@ -45,17 +45,17 @@ Figure~\ref{fig:overview}. The library of algorithms is the single box towards
 the middle of the figure.  These algorithms use the GraphBLAS C API
 which exists as a separate implementation for a wide range of hardware
 targets at the bottom of the figure.  To motivate our work and stay aligned 
-with the way data scientists work with graph algorithms, we need to appreciate that
+with the way data scientists use graph algorithms, we need to appreciate that
 people will use a wide range of languages to access the graph algorithms.  A good library
 must be able to work whether called directly from C or indirectly through a wrapper in Python.
 Furthermore, the developers of the graph algorithm libraries will need a test harness to
 validate the algorithms, I/O utilities, and a build system.  All of these components must
 be addressed as part of the LAGraph project. 
 
-LAGraph may not be a production-worthy library in its first incarnation,  
+LAGraph may not be a production-worthy library in its first incarnation.  
 However, we expect the LAGraph effort to produce such a library over time.  
 Anticipating that goal, we are constructing
-the library ``as if'' it will be used by data analytics end-users. That is, by people
+the library ``as if'' it will be used by data analytics end-users; that is, by people
 who need the results from graph algorithms with little concern for how they are
 implemented.  This requirement of building a library for \emph{end-users} as opposed to 
 a library for \emph{graph algorithm researchers} has far reaching implications for the 
@@ -64,8 +64,8 @@ design of this software.
 \begin{figure}[t]
 	\includegraphics[width=\linewidth]{fig/lagraph}
 	\caption{\textbf{LAGraph Project Overview.} The project consists of a library of 
-	graph algorithms, assorted components to support algorithm development and validation
-	(a test harness and I/O utilities) and it must interface to a wide range of languages.
+	graph algorithms and assorted components to support algorithm development and validation
+	(a test harness and I/O utilities). It must interface to a wide range of languages.
 	Underneath these components is a build system, implementations of the GraphBLAS,
 	and a variety of hardware targets. \label{fig:overview}}
 \end{figure}
@@ -77,7 +77,7 @@ the repository where we will build LAGraph.  This is important since the
 purpose of a position paper is to attract a community of researchers to join the effort,
 which in turn means we want people to understand how to work with and perhaps contribute 
 algorithms to the repository.  We then discuss the challenges we faced in writing the 
-early version LAGraph and what it suggests about future developments needed in the
+early version of LAGraph and what it suggests about future developments needed in the
 GraphBLAS themselves. We close with concluding remarks.
 
 
