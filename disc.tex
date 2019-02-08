@@ -95,7 +95,16 @@ external library followed by a freeing of the same space inside GraphBLAS with
 \verb'GrB_free(&A)' requires both libraries to agree on using the same
 \verb'malloc/free' routines.  To do this, the GraphBLAS API would need to be
 augmented to allow an external library to select which \verb'malloc/free'
-routines should be used.
+routines should be used.  This is essential for a MATLAB interface,
+since a MATLAB \verb'mexFunction' must use \verb'mxMalloc' and \verb'mxFree'.
+With the import/export feature, sparse matrices can be passed between MATLAB
+and GraphBLAS in $O(1)$ time, unless typecasting is required MATLAB supports
+all of the built-in types of GraphBLAS, plus \verb'double complex', but only
+for dense matrices.  For sparse matrices in MATLAB, only \verb'double' and
+\verb'double complex' are available.  A MATLAB interface to the GraphBLAS is in
+progress.  If the import/export feature is added to the GraphBLAS C API (as is
+being considered), this MATLAB interface would interoperate with any GraphBLAS
+library that is compliant with the spec.
 
 The point of these issues is that in designing an effective library, there are a host of 
 complicated issues to resolve.  A major part of the research contribution of this project will

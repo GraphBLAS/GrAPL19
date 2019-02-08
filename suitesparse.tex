@@ -37,13 +37,24 @@ or $O(e +p \log p)$ in the hypersparse case.  As a result, it is just as fast
 to use a sequence of $e$ \verb'GrB_Matrix_setElement' operations to build a matrix, as
 it is to create an array of $e$ tuples and use \verb'GrB_Matrix_build'.  Internally,
 SuiteSparse:GraphBLAS is building the list itself, for the user, and then does
-a \verb'GrB_Matrix_build' when the matrix needs to be completed.
+a \verb'GrB_Matrix_build' when the matrix is completed.
 
 To enable high-performance matrix-matrix multiply, a code generation mechanism
 is used to build functions for each semiring that can be created with built-in
 operators.  The functions can rely on Gustavson's method \cite{Gustavson78}, a
 dot product method, and a heap-based method \cite{sisc3dspgemm}, all with
-masked variants.  A current prototype of the package adds an early exit
+masked variants.  With this code generation mechanism, 6 functions
+containing 2 versions of Gustavson's method (no mask / with mask),
+three versions of the dot product (no mask / with mask / with complemented
+mask) and one version of the heap method, automatically expand into the 960
+unique semirings supported by the built-in operators in GraphBLAS
+SuiteSparse:GraphBLAS adds a few extensions to the set of operators;
+Using the  built-in types and operators from the GraphBLAS C API,
+600 unique semirings can be constructed.  All of them are as fast, or much
+faster, than \verb'C=A*B' in MATLAB.  Submatrix assignment (\verb'C(I,J)=A')
+can be 100x faster than MATLAB, even when non-blocking mode is not exploited.
+
+A current prototype of the package adds an early exit
 mechanism for the MIN, MAX, OR, and AND monoids, where a dot product can
 terminate as soon as a terminal value is found in the result (\verb'true' for
 OR, for example).  This will enable a fast direction-optimizing BFS
@@ -68,11 +79,11 @@ SuiteSparse:GraphBLAS (via a MATLAB interface) and in the MATLAB mimic.  The
 tests pass only if the results are identical in both value and pattern (even
 with identical floating-point roundoff error, in most cases).
 
-The package is extremely robust, and fully compliant with the GraphBLAS C API.
-Excluding SuiteSparse-specific extensions and beta releases, there have been
-only 3 bugs in the entire package since its first release, two of which would
-be triggered in only rare cases.  All three bugs are fixed, and the current
-version has no known bugs.
+The package is extremely robust and production-ready.  It is fully compliant
+with the GraphBLAS C API.  Excluding SuiteSparse-specific extensions and beta
+releases, there have been only 3 bugs in the entire package since its first
+release, two of which would be triggered in only rare cases.  All three bugs
+are fixed, and the current version has no known bugs in any part of the code.
 
 The current release is single-threaded, but an OpenMP implementation is in
 progress.  SuiteSparse:GraphBLAS appears in Debian and Ubuntu Linux distros,
