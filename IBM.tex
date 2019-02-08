@@ -1,6 +1,80 @@
 \subsection{IBM GraphBLAS}
 
-%% ToDo: Manoj and Jose
+\newcommand{\code}[1]{{\tt #1}}
 
-TODO: Manoj and Jose: Describe the IBM GraphBLAS implementation. Citations:\cite{gpi2016,GPI}
+The IBM GraphBLAS implementation was announced at IPDPS 2018 and made
+available at \code{https://github.com/IBM/ibmgraphblas}, fulfilling
+the GraphBLAS C API requirement of two confomring implementations,
+and promoting that specification from \emph{provisional} to
+\emph{definitive}. The approach adopted by the development team was
+heavily influenced by their experience with IBM's Graph Programming
+Interface~\cite{gpi2016,GPI}
 
+Among the various objectives of the IBM implementation, we note the
+desire to experiment with an implementation that allows multiple data
+representations and a layered approach to algorithms, keeping a GraphBLAS
+API layer on top of a more fundamental \emph{back-end} layer that performs
+the heavy computation.
+
+Use and operation of the IBM GraphBLAS is straightforward.
+The application programmer has access to a C11-compliant include
+file (\code{GraphBLAS.h}) that defines the API according to the
+specification. This include file exposes nothing of the internals of
+the run-time. The run-time itself is written in C++ and packaged as a
+library (\code{libibmgraphblas.so}) with C language bindings.  The choice
+of C++ as the implementation language has led to a simple and concise
+specification-compliant implementation.
+
+One of the jobs of the \code{GraphBLAS.h} include file is to
+convert the polymorphic version of the API into the nonpolymorphic
+one. The nonpolymorphic methods are then directly supported by the
+library. Conversion of the polymorphic interface is accomplished through
+standard C preprocessor features, primarily in supporting number of
+arguments polymorphosm, in combination with the standard C11 language
+\code{\_Generic} construct to support type polymorphism.
+
+As previously mentioned, the IBM GraphBLAS library is implemented in
+C++. The API methods are declared to have a C interface, so that C user
+programs can bind to them as specified. Objects internal to the library
+are declared as C++ classes, with member methods doing the actual work.
+We want to emphasize that this is a C++ implementation of a C API, and
+not an API for GraphBLAS that exploits C++ features, as other efforts
+are pursuing~\cite{gbtl-github}.
+
+The contents of a GraphBLAS vector object are implemented using standard
+C++ containers.  An unordered set of indices (\code{uset<GrB\_Index>})
+is used to represent the structure of the vector, while an unordered
+map of indices to pointers (\code{umap<GrB\_Index,void*>}) represents
+the elements.  (Currently, \code{uset} and \code{umap} are just renames
+for the \code{std::unordered\_set} and \code{std::unordered\_map} standard
+containers of C++, but one could use more specialized implementations.)
+
+Similarly, the contents of a matrix are represented both as a standard
+C++ container vector of rows and a standard C++ container vector of
+columns. Accessor methods enforce consistency of both representations.
+
+In the current IBM GraphBLAS, all methods are fully blocking. That is,
+the methods return only after all computations are fully performed (or
+an error is detected).  Since the GraphBLAS nonblocking mode allows for
+deferred execution but does not require it, this behavior complies with
+the specification.
+
+We finish this brief overview of the IBM GraphBLAS with a discussion
+of error handling, as we believe it reflects an important aspect of the
+interoperability between a C API and a C++ implementation.  The GraphBLAS
+C API defines two kinds of errors: API errors and execution errors.
+API errors reflect incorrect usage of the API (for example, passing
+parameters that are not valid or consistent). Execution errors indicate
+that something went wrong during the actual execution of a method,
+and can be caused either by programmer error or by environment issues
+(for example, not enough memory).
+
+In the IBM GraphBLAS run-time, API errors are detected through
+explicit checks in the implementation of each method in the API layer
+(the \emph{front-end}).  Execution errors, on the other hand, occur
+inside the member methods of the various objects internal to the library
+(the \emph{back-end}).  Those methods, following standard C++ practice,
+use exceptions to signal an error. To transform those exceptions into
+proper GraphBLAS C API return codes, the body of each GraphBLAS API
+method is wrapped by a \code{try}/\code{catch} block, which then returns
+the GraphBLAS execution error code corresponding to the caught exception.
