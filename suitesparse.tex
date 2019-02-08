@@ -15,10 +15,10 @@ array'' (of size equal to the dimension of the matrix, say $n$) keeps track of
 where each row (or column) starts.  The memory taken is $O(n+e)$ for a CSR
 matrix with $n$ rows or a CSC matrix with $n$ columns, and with $e$ entries.
 Most graphs have $e=O(n)$ entries, but some graphs (and in particular,
-subgraphs) can be {\em hypersparse} \cite{BulucGilbert08}, with $e << n$.  In
+subgraphs) can be {\em hypersparse} \cite{BulucGilbert08}, with $e \ll n$.  In
 the hypersparse form, the pointer array itself becomes sparse, and empty
 vectors take no space at all.  The space is reduced to $O(e)$, so that
-matrices with enormous dimensions can be created, as long as $e << n$.
+matrices with enormous dimensions can be created, as long as $e \ll n$.
 SuiteSparse:GraphBLAS exploits hypersparsity automatically, and all
 methods can operate on all four matrix formats in any combination.
 
@@ -34,10 +34,10 @@ unordered list of $(i,j,a_{ij})$ for each new entry.  When a matrix operation
 occurs (such as matrix multiply), all zombies are killed and all pending tuples
 are assembled, in a single $O(n+ e + p \log p)$ step (for $p$ pending tuples),
 or $O(e +p \log p)$ in the hypersparse case.  As a result, it is just as fast
-to use a sequence of $e$ \verb'GrB_setElement' operations to build a matrix, as
-it is to create an array of $e$ tuples and use \verb'GrB_build'.  Internally,
+to use a sequence of $e$ \verb'GrB_Matrix_setElement' operations to build a matrix, as
+it is to create an array of $e$ tuples and use \verb'GrB_Matrix_build'.  Internally,
 SuiteSparse:GraphBLAS is building the list itself, for the user, and then does
-a \verb'GrB_build' when the matrix needs to be completed.
+a \verb'GrB_Matrix_build' when the matrix needs to be completed.
 
 To enable high-performance matrix-matrix multiply, a code generation mechanism
 is used to build functions for each semiring that can be created with built-in

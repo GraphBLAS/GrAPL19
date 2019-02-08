@@ -19,7 +19,7 @@ anything but opaque.  This suggests that we need to define functions to import a
 data in standard sparse array formats into LAGraph.   The initial thinking was that this
 import functionality would be part of LAGraph and not the GraphBLAS.  The only way to 
 do that, however, is if we repacked the input sparse format into separate arrays for column 
-indices, row indices, and values and then use \verb'GrB_build_matrix' to construct the GraphBLAS
+indices, row indices, and values and then use \verb'GrB_Matrix_build' to construct the GraphBLAS
 matrix object.  This would extremely inefficient.  We need a way to directly import arrays 
 in standard sparse formats into the GraphBLAS and since the GraphBLAS data types are
 opaque, this can only be done as a GraphBLAS routine.  
