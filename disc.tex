@@ -91,14 +91,14 @@ $O(1)$ time.  SuiteSparse:GraphBLAS supports the import/export of all four of
 its formats: CSR, CSC, and their hypersparse variants.
 
 A \verb'malloc' of these \verb'Ap', \verb'Ai', and \verb'Ax' arrays by an
-external library followed by a freeing of the same space inside GraphBLAS with
+external library followed by freeing the same space inside GraphBLAS with
 \verb'GrB_free(&A)' requires both libraries to agree on using the same
 \verb'malloc/free' routines.  To do this, the GraphBLAS API would need to be
 augmented to allow an external library to select which \verb'malloc/free'
 routines should be used.  This is essential for a MATLAB interface,
 since a MATLAB \verb'mexFunction' must use \verb'mxMalloc' and \verb'mxFree'.
 With the import/export feature, sparse matrices can be passed between MATLAB
-and GraphBLAS in $O(1)$ time, unless typecasting is required MATLAB supports
+and GraphBLAS in $O(1)$ time, unless typecasting is required. MATLAB supports
 all of the built-in types of GraphBLAS, plus \verb'double complex', but only
 for dense matrices.  For sparse matrices in MATLAB, only \verb'double' and
 \verb'double complex' are available.  A MATLAB interface to the GraphBLAS is in
