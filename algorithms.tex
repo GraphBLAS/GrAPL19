@@ -4,28 +4,29 @@
 Many graph algorithms have been successfully implemented in the language of linear algebra. Below is a non-exhaustive list with references to their implementations:
 
 \begin{itemize}
-\item Breadth-first search (BFS)~\cite{bulucc2011parallel, gbtl-cuda16, Davis19}, including the direction optimizing BFS~\cite{Yang:2018:IPE}.
-\item Shortest-path (both single-source~\cite{Yang:2019:GBL, ssspgrapl19} and all-pairs~\cite{ca_apsp}) calculation
-\item Centrality measures, such as Betweenness centrality~\cite{combblas}
-\item Triangle counting and enumeration~\cite{trianglegabb15, wang2016comparative} as well as k-truss enumeration~\cite{}
-\item Connected components~\cite{lacc2019}
-\item PageRank~\cite{satish2014navigating}
-\item Graph coloring~\cite{coloringgrapl19}
-\item Subgraph counting~\cite{chen2019graphblas}
-\item Maximal independent set~\cite{jpdc15, Yang:2019:GBL}
+\item Breadth-first search (BFS)~\cite{bulucc2011parallel, gbtl-cuda16, Davis19}, including the direction optimizing BFS~\cite{Yang:2018:IPE},
+\item Shortest-path (both single-source~\cite{Yang:2019:GBL, ssspgrapl19, gbtl-cuda16} and all-pairs~\cite{ca_apsp}) calculation,
+\item Centrality measures, such as Betweenness centrality~\cite{combblas},
+\item Triangle counting and enumeration~\cite{trianglegabb15, wang2016comparative} as well as k-truss enumeration~\cite{davis2018graph},
+\item Connected components~\cite{lacc2019},
+\item PageRank~\cite{satish2014navigating},
+\item Graph coloring~\cite{coloringgrapl19},
+\item Subgraph counting~\cite{chen2019graphblas},
+\item Maximal~\cite{parco16} and maximum~\cite{matchingipdps16} cardinality matching on bipartite graphs,
+\item Maximal independent set~\cite{jpdc15, Yang:2019:GBL}.
 \end{itemize}
 
 Machine learning algorithms are also implemented using libraries that are in the spirit of GraphBLAS:
 \begin{itemize}
-\item Clustering, such as Markov clustering~\cite{azad2018hipmcl} and peer-pressure clustering~\cite{}
-\item Deep neural network inference~\cite{kepner2017enabling}
-\item Collaborative filtering with Stochastic Gradient Descent~\cite{satish2014navigating}
+\item Clustering, such as Markov clustering~\cite{azad2018hipmcl} and peer-pressure clustering~\cite{gilbert2006high},
+\item Deep neural network inference~\cite{kepner2017enabling},
+\item Collaborative filtering using Stochastic Gradient Descent~\cite{satish2014navigating}.
 \end{itemize}
 
 Finally, there are algorithms we consider to be important but has so far not been implemented using a GraphBLAS-like library:
 \begin{itemize}
-\item A* search
-\item Graph neural network training and inferences
-\item Branch and bound
-\item Graph kernels for supervised learning
+\item A* search,
+\item Graph neural network training and inference,
+\item Branch and bound,
+\item Graph kernels for supervised learning.
 \end{itemize}
