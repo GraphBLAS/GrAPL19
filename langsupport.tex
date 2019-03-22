@@ -1,0 +1,353 @@
+
+\usepackage{microtype}
+\renewcommand*\ttdefault{txtt}
+
+\usepackage{relsize}
+\usepackage{xspace}
+\usepackage[normalem]{ulem}
+
+% BNF Grammars
+\usepackage[nounderscore]{syntax}
+
+\usepackage{flushend}
+
+%\usepackage{xcolor,colortbl}
+
+%\usepackage{algorithmic}
+%\renewcommand{\algorithmiccomment}[1]{\hfill \{#1\}}
+\newcommand{\tid}{\mathit{tid}}
+\newcommand{\pop}{\mathit{pop}}
+\newcommand{\scount}{\mathit{send\_count}}
+
+\definecolor{LightGray}{gray}{0.97}
+\definecolor{MidGray}{gray}{0.9}
+\definecolor{HeavyGray}{gray}{0.83}
+\newcommand{\lcell}[3]{\multicolumn{1}{@{}>{\columncolor{#1}[0pt][\tabcolsep]}#2}{#3}}
+\newcommand{\rcell}[3]{\multicolumn{1}{>{\columncolor{#1}[\tabcolsep][0pt]}#2@{}}{#3}}
+\newcommand{\LGlcell}[1]{\lcell{LightGray}{l}{#1}}
+\newcommand{\LGrcell}[1]{\rcell{LightGray}{l}{#1}}
+\newcommand{\MGlcell}[1]{\lcell{MidGray}{l}{#1}}
+\newcommand{\MGrcell}[1]{\rcell{MidGray}{l}{#1}}
+\newcommand{\HGlcell}[1]{\lcell{HeavyGray}{l}{#1}}
+\newcommand{\HGrcell}[1]{\rcell{HeavyGray}{l}{#1}}
+
+%Use hyperref for linking and PDF bookmarks.
+%The commented options allow adjusting colors of links if so desired.
+\usepackage[
+  bookmarksnumbered=true,
+%  colorlinks=true,
+  pdfstartview=FitV,
+  bookmarksopen,
+%  linkcolor=blue,
+%  citecolor=blue,
+%  urlcolor=blue,
+  bookmarksopenlevel=2]
+{hyperref}
+\usepackage[all]{hypcap}
+% \hypersetup{
+%   bookmarksnumbered=true,
+%   pdfstartview=FitV,
+%   bookmarksopen,
+%   linkcolor=blue,
+%   citecolor=blue,
+%   urlcolor=blue,
+%   bookmarksopenlevel=2,
+%   colorlinks=true, %set true if you want colored links
+%   %% linktoc=all,     %set to all if you want both sections and subsections linked
+%   %% linkcolor=blue,  %choose some color if you want links to stand out
+%   }
+
+\usepackage{wrapfig}
+
+\usepackage{mdwlist}
+
+% Define keywords and settings for C++
+\lstdefinelanguage{C++1y}{
+  alsolanguage=C++,
+  escapechar=@,
+  breakatwhitespace=true,
+  morekeywords = {
+    alignof, decltype, concept, axiom, requires, property
+  }
+}
+
+% Define an environment for C++ programs
+\lstnewenvironment{program}[1][\small]
+{
+  \lstset{
+    style=C++,
+    basicstyle=#1\sffamily,
+    keywordstyle=#1\sffamily\bfseries,
+    commentstyle=#1\sffamily\itshape,
+  }
+}
+{ }
+
+% Define an environment for C++ programs with non-bold keywords
+\lstnewenvironment{programnb}[1][\small]
+{
+  \lstset{
+    style=C++,
+    basicstyle=#1\sffamily,
+    keywordstyle=#1\sffamily,
+    commentstyle=#1\sffamily,
+  }
+}
+{ }
+
+
+\usepackage{tikz}
+
+% code listings
+% \definecolor{lightblue}{rgb}{0.23,0.21,0.90}
+\definecolor{lightblue}{rgb}{0,0,0}
+\lstdefinelanguage{C++custom}
+{%columns=fullflexible,
+escapeinside={/*@}{@*/},breaklines=true,breakatwhitespace=true,%
+basicstyle=\color{lightblue},keywordstyle=,%
+lineskip=-.05\baselineskip,morekeywords={pattern,in,is,to,from,out_edges,adj,once,fixed_point,vertex_property,edge_property,vertex,edge,meta,auto,concept,requires,concept_map},%
+alsolanguage=C++,
+literate = %
+  {\{}{\smaller{$\{$}}{1}%
+  {\}}{\smaller{$\}$}}{1}%
+  {<=}{$\leq$}{1}%
+  {-}{--}{1}%
+}
+
+\lstdefinelanguage{Pythoncustom}
+{%columns=fullflexible,
+escapeinside={/*@}{@*/},breaklines=true,breakatwhitespace=true,%
+basicstyle=\color{lightblue},keywordstyle=,%
+lineskip=-.05\baselineskip,%morekeywords={}%pattern,in,is,to,from,out_edges,adj,once,fixed_point,vertex_property,edge_property,vertex,edge,meta,auto,concept,requires,concept_map},%
+alsolanguage=Python,
+literate = %
+  {\{}{\smaller{$\{$}}{1}%
+  {\}}{\smaller{$\}$}}{1}%
+  {<=}{$\leq$}{1}%
+  {-}{--}{1}%
+}
+
+\lstdefinestyle{numbers}
+{xleftmargin=8pt,numbers=left, numberstyle=\tiny,%
+stepnumber=1, numbersep=4pt}
+
+\lstdefinestyle{frametb}
+{frame=tb}
+
+\lstdefinestyle{bold-keywords}{keywordstyle=\bfseries}
+
+\lstnewenvironment{myverb}[1][\small]{\lstset{%language=C++custom,%
+    %style=numbers,
+    columns=fullflexible,
+    basicstyle=\color{lightblue}#1\ttfamily,%
+    %keywordstyle=#1\ttfamily,%
+    %style=bold-keywords,
+    breaklines=true,
+    %style=frametb
+  }}{}
+
+\newif\ifminted
+\mintedtrue
+%\mintedfalse
+\ifminted
+\usepackage{minted}
+\setminted{fontsize=\footnotesize,baselinestretch=.97,linenos,frame=lines,xleftmargin=6pt,numbersep=3pt,mathescape=true,escapeinside=||,bgcolor=bg}
+\usemintedstyle{default}
+\definecolor{bg}{rgb}{0.97,0.97,0.97}
+\newminted{cpp}{}
+\newenvironment{cplus}{\VerbatimEnvironment\begin{cppcode}}{\end{cppcode}}
+\newmintinline[cplusinl]{cpp}{}
+\newminted{python3}{}
+\newenvironment{python}{\VerbatimEnvironment\begin{python3code}}{\end{python3code}}
+\newmintinline[pytinl]{python3}{fontsize=\small,breaklines}
+\else
+\lstnewenvironment{cplus}[1][\footnotesize]{\lstset{language=C++custom,%
+    style=numbers,basicstyle=\color{lightblue}#1\ttfamily,%
+    keywordstyle=#1\ttfamily,%
+    style=bold-keywords,style=frametb}}{}
+
+\lstnewenvironment{cplusuf}[1][\small]{\lstset{language=C++custom,%
+    style=numbers,basicstyle=\color{lightblue}#1\ttfamily,%
+    keywordstyle=#1\ttfamily,%
+    style=bold-keywords,frame=t%,style=frametb
+  }}{}
+
+\lstnewenvironment{mjava}[1][\small]{\lstset{language=Java,%
+    escapeinside={/*@}{@*/},style=numbers,basicstyle=\color{lightblue}#1\ttfamily,%
+    keywordstyle=#1\ttfamily,%
+    style=bold-keywords,style=frametb}}{}
+
+\lstnewenvironment{cplusnln}[1][\small]{\lstset{language=C++custom,%columns=flexible,%
+    xleftmargin=8pt,xrightmargin=8pt,basicstyle=\color{lightblue}#1\ttfamily,%
+    keywordstyle=#1\ttfamily,%
+    style=bold-keywords,style=frametb}}{}
+
+\makeatletter
+\lstnewenvironment{code}[1][\footnotesize]{\lstset{language=C++custom,columns=fullflexible,%
+    xleftmargin=8pt,xrightmargin=8pt,basicstyle=\color{lightblue}#1,%
+    keywordstyle=#1,style=numbers,%
+    style=bold-keywords,mathescape=true}}{\@endparenv}
+\makeatother
+
+\lstnewenvironment{python}[1][\footnotesize]{\lstset{language=Pythoncustom,%
+    style=numbers,basicstyle=\color{lightblue}#1\ttfamily,%
+    keywordstyle=#1\ttfamily,%
+    style=bold-keywords,style=frametb}}{}
+
+\lstnewenvironment{pythonuf}[1][\small]{\lstset{language=Pythoncustom,%
+    style=numbers,basicstyle=\color{lightblue}#1\ttfamily,%
+    keywordstyle=#1\ttfamily,%
+    style=bold-keywords,frame=t%,style=frametb
+  }}{}
+
+\lstnewenvironment{pythonln}[1][\small]{\lstset{language=Pythoncustom,%columns=flexible,%
+    xleftmargin=8pt,xrightmargin=8pt,basicstyle=\color{lightblue}#1\ttfamily,%
+    keywordstyle=#1\ttfamily,%
+    style=bold-keywords,style=frametb}}{}
+
+\makeatletter
+\lstnewenvironment{pcode}[1][\footnotesize]{\lstset{language=Pythoncustom,columns=fullflexible,%
+    xleftmargin=8pt,xrightmargin=8pt,basicstyle=\color{lightblue}#1,%
+    keywordstyle=#1,style=numbers,%
+    style=bold-keywords,mathescape=true}}{\@endparenv}
+\makeatother\fi
+
+
+
+\providecommand{\codeinl}[2][\small] %[\normalsize]
+{{\lstinline[language=C++custom,breaklines=false,columns=fullflexible,%
+basicstyle=\color{lightblue}#1\sffamily%\itshape
+,mathescape=true,keywordstyle=#1\sffamily]@#2@}}%
+
+\providecommand{\cplusinl}[2][\small] %[\normalsize]
+{{\lstinline[language=C++custom,breaklines=false,columns=fullflexible,%
+basicstyle=\color{lightblue}#1\ttfamily%\itshape
+,keywordstyle=#1\ttfamily]@#2@}}%
+
+\providecommand{\pytinl}[2][\small] %[\normalsize]
+{{\lstinline[language=Pythoncustom,breaklines=false,columns=fullflexible,%
+basicstyle=\color{lightblue}#1\ttfamily%\itshape
+,keywordstyle=#1\ttfamily]@#2@}}%
+
+\lstdefinestyle{cppmarkers}{rangeprefix=/*\#\ ,%
+includerangemarker=false,%
+rangesuffix=\ \#*/}%
+
+\providecommand{\cplusinput}[3][\footnotesize]{{\lstinputlisting[language=C++custom,style=cppmarkers,style=numbers,basicstyle=\color{lightblue}#1\ttfamily,keywordstyle=#1\ttfamily,style=bold-keywords,style=frametb,firstnumber=1,linerange={#3}]{#2}}}
+
+\lstdefinelanguage{Haskell-custom}
+{%columns=flexible,
+escapeinside={--@}{@--},breaklines=true,breakatwhitespace=true%
+language=Haskell,basicstyle=\color{lightblue}\ttfamily,keywordstyle=\ttfamily,%
+morekeywords={class,instance,type,newtype,data,where,deriving,import},%
+lineskip=-.1\baselineskip,morekeywords={concept,requires,concept_map},
+literate={+}{{$+$}}1 {/}{{$/$}}1 {*}{{$*$}}1 {=}{{$=$}}1
+               {>}{{$>$}}1 {<}{{$<$}}1 {\\}{{$\lambda$}}1
+               {\\\\}{{\char`\\\char`\\}}1
+               {->}{{$\rightarrow$}}2 {>=}{{$\geq$}}2 {<-}{{$\leftarrow$}}2
+               {=>}{{$\Rightarrow$}}2
+               {\ .}{{$\circ$}}2 {\ .\ }{{$\circ$}}2
+               {>>}{{>>}}2 {>>=}{{>>=}}2
+               {|}{{$\mid$}}1
+             }
+
+\lstnewenvironment{hask}[1][\small]{\lstset{language=Haskell-custom,%
+    style=numbers,basicstyle=\color{lightblue}#1\ttfamily,keywordstyle=#1\ttfamily,%
+    style=bold-keywords,style=frametb}}{}
+
+\providecommand{\haskellinl}[2][\normalsize]{{\lstinline[language=Haskell-custom, columns=fullflexible%
+basicstyle=\color{lightblue}#1\ttfamily,keywordstyle=#1\ttfamily]@#2@}}%
+
+\providecommand{\haskinl}[2][\normalsize]{{\lstinline[language=Haskell-custom,columns=fullflexible,%
+basicstyle=\color{lightblue}#1\ttfamily,mathescape=true,keywordstyle=#1\ttfamily]@#2@}}%
+
+\lstdefinestyle{markers}{rangeprefix=\{-\:\ ,%
+includerangemarker=false,%
+rangesuffix=\ \:-\}}%
+
+\providecommand{\haskin}[3][\footnotesize]{{\lstinputlisting[language=Haskell-custom,basicstyle=\color{lightblue}#1\ttfamily,keywordstyle=#1\ttfamily,%
+style=bold-keywords,style=markers,style=numbers,style=frametb,firstnumber=1,linerange={#3}]{#2}}}
+
+\providecommand{\haskellinputnonumber}[3][\small]{{\lstinputlisting[language=Haskell-custom,basicstyle=\color{lightblue}#1\ttfamily,keywordstyle=#1\ttfamily,%
+style=bold-keywords,style=frametb,%xleftmargin=8pt,xrightmargin=8pt,
+style=markers,firstnumber=1,linerange={#3}]{#2}}}
+
+% Define the test style
+% Uncomment the literate stuff for improved formatting. Note that changing
+% the '_' token causes the lexer to tokenize keywords in underscore-separated
+% identifiers., That's why we have some additional replacements.
+\lstdefinestyle{C++}
+{
+  language=C++1y,
+  columns=fullflexible,
+  breaklines=true,
+  % literate=
+    % {-}{\ttfamily --}{1}
+    % {_}{\underscore}{1}
+    % {=}{\ttfamily =}{1}
+    % {+}{\ttfamily +}{1}
+    % {>}{\larger\ttfamily >}{1}
+    % {<}{\larger\ttfamily <}{1}
+    % {&}{\larger\ttfamily \&}{1}
+    % {*}{\ttfamily *}{1}
+    % {|}{\larger\ttfamily |}{1}
+    % {for_}{for\underscore}{1}
+    % {not_}{not\underscore}{1}
+    % {_if}{\underscore if}{1}
+    % {_not}{\underscore not}{1}
+    % {_union}{\underscore union}{1}
+    % {_mutable}{\underscore mutable}{1}
+    % {_signed}{\underscore signed}{1}
+    % {_unsigned}{\underscore unsigned}{1}
+}
+
+% Define a language and settings for CASL programs
+\lstdefinelanguage{CASL}{
+  escapechar=@,
+  breakatwhitespace=true,
+  morekeywords = {
+    spec, sort, then, op, ops, var, vars, pred, end
+  }
+}
+
+% Define an environment for CASL specifications.
+\lstnewenvironment{casl}[1][\small]
+{
+  \lstset{
+    language=CASL,
+    basicstyle=#1\sffamily,
+    keywordstyle=#1\sffamily\bfseries,
+    commentstyle=#1\sffamily,
+    columns=fullflexible,
+    breaklines=true,
+  }
+}
+{ }
+
+% Taken from http://mintaka.sdsu.edu/GF/bibliog/latex/floats.html
+% Alter some LaTeX defaults for better treatment of figures:
+% See p.105 of "TeX Unbound" for suggested values.
+% See pp. 199-200 of Lamport's "LaTeX" book for details.
+%   General parameters, for ALL pages:
+\renewcommand{\topfraction}{0.9}	% max fraction of floats at top
+\renewcommand{\bottomfraction}{0.9}	% max fraction of floats at bottom
+%   Parameters for TEXT pages (not float pages):
+\setcounter{topnumber}{4}
+\setcounter{bottomnumber}{4}
+\setcounter{totalnumber}{4}     % 2 may work better
+\setcounter{dbltopnumber}{4}    % for 2-column pages
+\renewcommand{\dbltopfraction}{0.9}	% fit big float above 2-col. text
+\renewcommand{\textfraction}{0.01}	% allow minimal text w. figs
+%   Parameters for FLOAT pages (not text pages):
+\renewcommand{\floatpagefraction}{0.7}	% require fuller float pages
+% N.B.: floatpagefraction MUST be less than topfraction !!
+\renewcommand{\dblfloatpagefraction}{0.7}	% require fuller float pages
+% remember to use [htp] or [htpb] for placement
+
+
+%\usepackage{eqparbox}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "paper"
+%%% End:

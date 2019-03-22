@@ -13,64 +13,116 @@ starts its work on the C++ language binding to the GraphBLAS, GBTL will be submi
 proposed starting point for the discussion.
 
  
-As illustrated in Figure~\ref{fig:gbtl}, central to GBTL's design is the concept of a separation 
-of concerns between implementation of algorithms written in terms of the GraphBLAS primitives 
-and the implementation of those primitives on a targeted hardware platform.   Today the
- separation of concerns is defined by the GraphBLAS API Specification.  Above 
- this API, GBTL has developed and includes a collection of graph algorithms 
- written against its C++ API and has already been shown to be easily translated to the C API.  
- Below the separation/API, different implementations of the GraphBLAS library can be supported 
- for different hardware architectures (referred to as ``backends'').  In this way we verify that algorithms 
- written once against the API can run on different targeted hardware.  In terms of backend 
- implementations, a mathematically correct reference implementation (not optimized) for single 
- threaded CPU is provided with Version 2.0 of GBTL (version 1.0 also had a GPU implementation).  
- Other backend implementations are currently under development to target specialized computer architectures.
+Central to GBTL's design is the concept of a separation of concerns between 
+implementation of algorithms written in terms of the GraphBLAS primitives  
+and the implementation of those primitives on a targeted hardware platform.   
+This separation of concerns is defined by the GraphBLAS API Specification as
+illustrated in Figure~\ref{fig:overview}.  
+Above this API, GBTL has developed and includes a collection of graph algorithms 
+written against its C++ API and has already been shown to be easily translated to 
+the C API (compare Figures~\ref{code:pyGB}(c) and~\ref{code:pyGB}(d)).  Below the separation/API, different implementations of the GraphBLAS 
+library can be supported for different hardware architectures (referred to as 
+``backends'').  In this way we verify that algorithms written once against the API 
+can run on different targeted hardware.  One backend that is provided with Version 
+2.0 of GBTL implements a mathematically correct version of the C API 
+specification and serves as a reference implementation for verifying correctness.  It runs 
+in a single thread on a CPU (an earlier version of GBTL also had a GPU 
+implementation).  Other backend implementations are currently under development 
+to optimize performance, use multiple threads, and to target specialized 
+computer architectures.
 
-\begin{figure}[t]
-\includegraphics[width=\linewidth]{fig/gbtl}
-\caption{\textbf{Graph processing software stack.}\label{fig:gbtl}}
-\end{figure}
+\subsection{PyGB: python DSL for GraphBLAS}
 
-%  I don't know how to make the listing work below  so I will comment this out for now
-
-Another development effort closely related to GBTL is a DSL (domain-specific language) in Python called pyGB~\cite{Chamberlin2016}.  
-The goal for pyGB is to closely resemble the GraphBLAS mathematical notation found in the GraphBLAS math spec~\cite{mathgraphblas16}.  
+Another development effort closely related to GBTL is a DSL (domain-specific language) in Python called PyGB~\cite{Chamberlin2016}.  
+The goal for PyGB is to closely resemble the GraphBLAS mathematical notation found in the GraphBLAS math spec~\cite{mathgraphblas16}.  
 PyGB is a framework is designed and implemented to dispatch dynamically generated and compiled templated 
 classes that make calls into native GBTL code.  It demonstrates how Python's syntax and dynamic execution provides 
 a high-level abstraction with minimal performance penalty.  While we leave a detailed discussion of pyGB to elsewhere~\cite{Chamberlin2016}
 we provide a level-BFS function using pyGB in Figure~\ref{code:pyGB}.
-%
-% Tim Davis tried this:
-\begin{figure}[t]
-{\small
-\begin{verbatim}
+
+\begin{figure}
+
+\begin{subfigure}{\columnwidth}
+  \begin{cplus}
+Input: graph, frontier, levels
+depth |$\leftarrow$| 0
+while nvals(frontier) > 0:
+  depth |$\leftarrow$| depth + 1
+  levels[frontier] |$\leftarrow$| depth
+  frontier<|$\neg$|levels,replace> |$\leftarrow$| graph|$^T$| |$\oplus . \otimes$| frontier
+    where |$\oplus . \otimes = \mathbf{\bigoplus} . \mathbf{\bigotimes}($|LogicalSemiring|$)$|
+  \end{cplus}
+%, |$\oplus  = \mathbf{\bigoplus}($|LogicalSemiring|$)$|
+  \caption{Pseudocode}
+  \label{subfig:pseudo}
+\end{subfigure}\\[1ex]
+
+\vspace{-0.6ex}
+
+\begin{subfigure}{\columnwidth}
+  \begin{python}
 def bfs(graph, frontier, levels):
-   level = 0
-   while frontier.nvals > 0:
-      level += 1
-      levels[front][:] = level
-      with gb.LogicalSemiring, gb.Replace:
-         frontier[~levels] = graph.T@frontier
-\end{verbatim}
+  depth = 0
+  while frontier.nvals > 0:
+    depth += 1
+    levels[frontier][:] = depth
+    with gb.LogicalSemiring, gb.Replace:
+      frontier[~levels] = graph.T @ frontier
+  \end{python}
+ \caption{PyGB}
+\end{subfigure}\\[1ex]
+
+\begin{subfigure}{\columnwidth}
+  \begin{cplus}
+template<class Mat, class Frontier, class Levels>
+void bfs(Mat &graph, Frontier frontier, Levels &levels)
+{
+  GrB::IndexType depth = 0;
+  while (frontier.nvals() > 0) {
+    ++depth;
+    GrB::assign(levels, frontier, GrB::NoAccumulate(),
+                depth, GrB::AllIndices(), false);
+    GrB::mxv(frontier, GrB::complement(levels),
+             GrB::NoAccumulate(),
+             GrB::LogicalSemiring<GrB::IndexType>(),
+             GrB::transpose(graph), frontier, true);
+  }
 }
-\caption{\textbf{Level-BFS function in pyGB.}\label{code:pyGB}}
+\end{cplus}
+\caption{GBTL \cpp}
+\end{subfigure}
+
+\begin{subfigure}{\columnwidth}
+  \begin{cplus}
+void bfs(GrB_Matrix  graph,
+         GrB_Vector  frontier,
+         GrB_Vector *levels)
+{
+  GrB_Index n, nvals;
+  GrB_Matrix_nrows(&n, graph);
+  GrB_Vector_nvals(&nvals, frontier);
+  GrB_Semiring LogicalSemiring;
+  GrB_Descriptor Desc_TranA_ScmpM_Replace;
+  //...
+  GrB_Index depth = 0;
+  while (nvals > 0) {
+    ++depth;
+    GrB_assign(*levels, frontier, GrB_NULL,
+               depth, GrB_ALL, n, GrB_NULL);
+    GrB_mxv(frontier, *levels, GrB_NULL,
+            LogicalSemiring, graph, frontier
+            Desc_TranA_ScmpM_Replace);
+    GrB_Vector_nvals(&nvals, frontier);
+  }
+}
+\end{cplus}
+\caption{GraphBLAS C API}
+\end{subfigure}
+
+\caption{Level-based BFS traversal in math pseudocode, PyGB, GBTL \cpp, and using the GraphBLAS C API.\label{code:pyGB}}
 \end{figure}
-%
-% or we can just included it in line, not in a figure:
-%
-%   {\footnotesize
-%   \begin{verbatim}
-%   # Level-BFS function in pyGB
-%   def bfs(graph, frontier, levels):
-%       level = 0
-%       while frontier.nvals > 0:
-%           level += 1
-%           levels[front][:] = level
-%           with gb.LogicalSemiring, gb.Replace:
-%               frontier[~levels] = graph.T @ frontier 
-%   \end{verbatim}
-%   }
-%
+
+
 Notice how the meaning of the code
 is straightforward since the DSL closely tracks the notation from the GraphBLAS math spec.  We believe in the long run, the 
 future of graph algorithms will depend heavily on such DSLs.

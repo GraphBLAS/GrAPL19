@@ -1,4 +1,4 @@
-\documentclass[10pt, conference, compsocconf,letter]{IEEEtran}   	
+\documentclass[10pt, conference, compsocconf,letter]{IEEEtran} 
 %\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
 %\geometry{letterpaper}                		% ... or a4paper or a5paper or ... 
 %\geometry{landscape}                		% Activate for for rotated page geometry
@@ -22,12 +22,24 @@
 \usepackage{varwidth}
 \usepackage{multirow}
 \usepackage{rotating, xcolor}
-\usepackage{subfig}
+\usepackage{colortbl}
+
+%\usepackage{subfig}
+
+\usepackage{caption}
+\captionsetup[algorithm]{labelsep=colon}
+\usepackage[subrefformat=parens,labelformat=parens]{subcaption}
+\setlength{\abovecaptionskip}{1ex plus 3pt minus 2pt}
+
+
 \usepackage{enumitem}
 %\usepackage[caption=false]{subfig}
 \usepackage[hyphens]{url}
 \usepackage{float}
-\newfloat{algorithm}{t}{lop}
+\floatstyle{ruled}
+\newfloat{algorithm}{tbh}{lop}
+\floatname{algorithm}{Algorithm}
+\setlength{\textfloatsep}{10pt}
 
 \usepackage{tcolorbox}
 \definecolor{mycolor}{rgb}{0.122, 0.435, 0.698}
@@ -80,6 +92,7 @@
 \newcommand{\lirefthree}[3] {lines \ref{li:#1}, \ref{li:#2}, and~\ref{li:#3}}
 
 \def\Cpp{C{}\texttt{++}}
+\newcommand{\cpp}{\Cpp}
 \newcommand{\mA}{\mathbf{A}} 
 \newcommand{\mL}{\mathbf{L}}
 \newcommand{\mU}{\mathbf{U}}
@@ -135,6 +148,10 @@
 \hyphenation{Suite-Sparse}
 \hyphenation{Graph-BLAS}
 \hyphenation{Suite-Sparse-Graph-BLAS}
+
+
+\input{langsupport}  	
+
 
 %\input{algobox}
 
