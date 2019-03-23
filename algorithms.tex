@@ -1,13 +1,15 @@
 \section{Algorithms targeted by LAGraph}
 \label{sec:algorithms}
 
-Many graph algorithms have been successfully implemented in the language of linear algebra. Below is a non-exhaustive list with references to their implementations:
+Many graph algorithms have been successfully implemented in the language of linear algebra. The following is
+a list of key algorithms and representative implementations; emphasizing that this list is not 
+exhaustive. 
 
 \begin{itemize}
 \item Breadth-first search (BFS)~\cite{bulucc2011parallel, gbtl-cuda16, Davis19}, including the direction optimizing BFS~\cite{Yang:2018:IPE},
 \item Shortest-path (both single-source~\cite{Yang:2019:GBL, ssspgrapl19, gbtl-cuda16} and all-pairs~\cite{ca_apsp}) calculation,
 \item Centrality measures, such as Betweenness centrality~\cite{combblas},
-\item Triangle counting and enumeration~\cite{trianglegabb15, wang2016comparative} as well as k-truss enumeration~\cite{davis2018graph},
+\item Triangle counting and enumeration~\cite{trianglegabb15, wang2016comparative} as well as k-truss enumeration~\cite{davis2018graph,low2018linear},
 \item Connected components~\cite{lacc2019},
 \item PageRank~\cite{satish2014navigating},
 \item Graph coloring~\cite{coloringgrapl19},
